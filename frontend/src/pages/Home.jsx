@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "@mui/material";
 
-const App = () => <Container />;
+const Home = () => <Container>Home</Container>;
 
-export default App;
+export default Home;
