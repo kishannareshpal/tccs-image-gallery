@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "@fontsource/inter/variable-full.css";
 import "./App.styles.scss";
 import Home from "./pages/Home";
+import NavBar from "./components/NavBar";
 
 const theme = createTheme({
     typography: {
@@ -17,6 +18,10 @@ const theme = createTheme({
         secondary: {
             main: "#000",
             contrastText: "#fff"
+        },
+        background: {
+            main: "#F6F8FA",
+            contrastText: "#000"
         }
     },
     shape: {
@@ -26,6 +31,7 @@ const theme = createTheme({
 
 const App = () => (
     <ThemeProvider theme={theme}>
+        <NavBar />
         <Router>
             <Switch>
                 <Route exact path="/">
