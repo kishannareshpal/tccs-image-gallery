@@ -1,9 +1,6 @@
-function App() {
-  return (
-    <div className="App">
+import React from "react";
+import { Container } from "@mui/material";
 
-    </div>
-  );
-}
+const App = () => <Container />;
 
 export default App;
