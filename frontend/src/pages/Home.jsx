@@ -1,6 +1,12 @@
 import React from "react";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
-const Home = () => <Container>Home</Container>;
+const Home = () => (
+    <Container>
+        <Typography variant="h4" sx={{ fontWeight: 800 }}>
+            Home
+        </Typography>
+    </Container>
+);
 
 export default Home;

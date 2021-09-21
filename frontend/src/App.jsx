@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import "@fontsource/inter/variable-full.css";
+import "./App.styles.scss";
 import Home from "./pages/Home";
 
 const theme = createTheme({
