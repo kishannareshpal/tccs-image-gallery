@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "@fontsource/inter/variable-full.css";
 import "./App.styles.scss";
 import Home from "./pages/Home";
+import Login from "./pages/Login";
 import NavBar from "./components/NavBar";
 
 const theme = createTheme({
@@ -32,6 +33,9 @@ const App = () => (
             <Switch>
                 <Route exact path="/">
                     <Home />
+                </Route>
+                <Route exact path="/login">
+                    <Login />
                 </Route>
             </Switch>
         </Router>
