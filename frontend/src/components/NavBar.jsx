@@ -25,8 +25,13 @@ const NavBar = () => (
                     <img src={AppLogoPNG} alt="App logo" height={48} />
                 </Link>
                 <Box sx={{ flexGrow: 1 }} />
-                <Button variant="primary" sx={{ px: 2 }}>
-                    Create gallery
+                <Button
+                    component={Link}
+                    to="/login"
+                    variant="light"
+                    sx={{ px: 2 }}
+                >
+                    Login
                 </Button>
             </Toolbar>
         </Container>

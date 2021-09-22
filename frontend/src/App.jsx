@@ -1,6 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { createTheme, ThemeProvider, lighten } from "@mui/material/styles";
+import {
+    createTheme,
+    ThemeProvider,
+    lighten,
+    darken
+} from "@mui/material/styles";
 import "@fontsource/inter/variable-full.css";
 import "./App.styles.scss";
 import Home from "./pages/Home";
@@ -48,6 +53,17 @@ const theme = createTheme({
                         color: "#fff",
                         "&:hover": {
                             background: lighten("#000", 0.1)
+                        }
+                    }
+                },
+                {
+                    props: { variant: "light" },
+                    style: {
+                        borderRadius: 500, // setting a very big border-radius, makes the shape appear pill-like
+                        background: darken("#fff", 0.08),
+                        color: "#000",
+                        "&:hover": {
+                            background: darken("#fff", 0.15)
                         }
                     }
                 }
