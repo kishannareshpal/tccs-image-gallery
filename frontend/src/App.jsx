@@ -18,10 +18,6 @@ const theme = createTheme({
         secondary: {
             main: "#000",
             contrastText: "#fff"
-        },
-        background: {
-            main: "#F6F8FA",
-            contrastText: "#000"
         }
     },
     shape: {
