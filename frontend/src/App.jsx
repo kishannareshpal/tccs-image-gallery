@@ -5,6 +5,7 @@ import "@fontsource/inter/variable-full.css";
 import "./App.styles.scss";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import NavBar from "./components/NavBar";
 
 const theme = createTheme({
@@ -65,6 +66,9 @@ const App = () => (
                 </Route>
                 <Route exact path="/login">
                     <Login />
+                </Route>
+                <Route exact path="/register">
+                    <Register />
                 </Route>
             </Switch>
         </Router>

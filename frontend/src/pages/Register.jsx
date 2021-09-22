@@ -5,17 +5,20 @@ import {
     Grid,
     Typography,
     TextField,
-    IconButton,
-    InputAdornment
+    InputAdornment,
+    IconButton
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-const Login = () => {
+const Register = () => {
     /**
-     * User's auth details
+     * User's registration details
      */
-    const [emailOrUsername, setEmailOrUsername] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [shouldShowPassword, setShouldShowPassword] = useState(false);
 
@@ -33,19 +36,64 @@ const Login = () => {
             >
                 <Grid item xs={12} sm={8} md={6} lg={5}>
                     <Typography variant="h4" sx={{ fontWeight: 800 }}>
-                        Login
+                        Create an Account
                     </Typography>
 
                     <Typography component="div" sx={{ fontWeight: 400, mb: 2 }}>
-                        Welcome back!
+                        View and share beautiful photos for everyone to enjoy.
                     </Typography>
+
+                    <Grid container spacing={2}>
+                        <Grid item xs md={6}>
+                            <TextField
+                                fullWidth
+                                sx={{ mb: 2 }}
+                                label="First name"
+                                value={firstName}
+                                onChange={e => setFirstName(e.target.value)}
+                                type="email"
+                                variant="filled"
+                            />
+                        </Grid>
+                        <Grid item xs md={6}>
+                            <TextField
+                                fullWidth
+                                sx={{ mb: 2 }}
+                                label="Last name"
+                                value={lastName}
+                                onChange={e => setLastName(e.target.value)}
+                                type="email"
+                                variant="filled"
+                            />
+                        </Grid>
+                    </Grid>
 
                     <TextField
                         fullWidth
                         sx={{ mb: 2 }}
-                        label="Email or username"
-                        value={emailOrUsername}
-                        onChange={e => setEmailOrUsername(e.target.value)}
+                        label="Username"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment
+                                    position="start"
+                                    sx={{ fontWeight: "600" }}
+                                >
+                                    @
+                                </InputAdornment>
+                            )
+                        }}
+                        type="text"
+                        variant="filled"
+                    />
+
+                    <TextField
+                        fullWidth
+                        sx={{ mb: 2 }}
+                        label="Email"
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                         type="email"
                         variant="filled"
                     />
@@ -78,12 +126,11 @@ const Login = () => {
                     />
 
                     <Typography variant="subtitle2" sx={{ mb: 2 }}>
-                        Don&apos;t have an account?{" "}
-                        <Link to="/register">Create Account</Link>
+                        Already have an account? <Link to="/login">Login</Link>
                     </Typography>
 
                     <Button variant="black" sx={{ px: 2, py: 1 }}>
-                        Login
+                        Register
                     </Button>
                 </Grid>
             </Grid>
@@ -91,4 +138,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Register;
