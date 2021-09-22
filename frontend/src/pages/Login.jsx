@@ -66,9 +66,9 @@ const Login = () => {
                         variant="filled"
                     />
 
-                    <LoginButton size="large" sx={{ px: 2 }}>
+                    <Button variant="black" sx={{ px: 2 }}>
                         Login
-                    </LoginButton>
+                    </Button>
                 </Grid>
             </Grid>
         </Container>
