@@ -102,7 +102,6 @@ const GalleryCard = ({
 GalleryCard.defaultProps = {
     description: null,
     imageThumbnailHeight: 146,
-    // array of thumbnail src's
     imageThumbnails: []
 };
 
@@ -113,11 +112,22 @@ GalleryCard.propTypes = {
      */
     username: PropTypes.string.isRequired,
     /**
-     *
+     * Gallery description
+     * @default null
      */
     description: PropTypes.string,
+    /**
+     * Gallery thumbnail image height
+     * @default 146
+     */
     imageThumbnailHeight: PropTypes.number,
+    /**
+     * List of image thumbnails srcs. Provide an array of size 3
+     */
     imageThumbnails: PropTypes.arrayOf(PropTypes.string),
+    /**
+     * Number of images included in the gallery.
+     */
     imageCount: PropTypes.number.isRequired
 };
 
