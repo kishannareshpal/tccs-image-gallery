@@ -58,8 +58,8 @@ const theme = createTheme({
 
 const App = () => (
     <ThemeProvider theme={theme}>
-        <NavBar />
         <Router>
+            <NavBar />
             <Switch>
                 <Route exact path="/">
                     <Home />

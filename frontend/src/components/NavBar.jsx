@@ -7,6 +7,7 @@ import {
     Button,
     styled
 } from "@mui/material";
+import { Link } from "react-router-dom";
 import AppLogoPNG from "../assets/images/app_logo.png";
 
 const AppBar = styled(MuiAppBar)({
@@ -20,7 +21,9 @@ const NavBar = () => (
     <AppBar elevation={0} position="sticky">
         <Container>
             <Toolbar disableGutters>
-                <img src={AppLogoPNG} alt="App logo" height={48} />
+                <Link to="/">
+                    <img src={AppLogoPNG} alt="App logo" height={48} />
+                </Link>
                 <Box sx={{ flexGrow: 1 }} />
                 <Button variant="primary" sx={{ px: 2 }}>
                     Create gallery
