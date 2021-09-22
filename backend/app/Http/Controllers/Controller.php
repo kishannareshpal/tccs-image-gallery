@@ -14,7 +14,7 @@ class Controller extends BaseController
      * @param int $statusCode HTTP success status code between 200-299
      * @throws Exception When HTTP status code is out of the http success code range.
      *
-     * @example Getting a list of data
+     * @example Get list of Things
      *  {
      *      status: "success",
      *      code: 200,
@@ -25,13 +25,13 @@ class Controller extends BaseController
      *          ]
      *      }
      *  }
-     * @example Getting single data
+     * @example Get a Thing
      *  {
      *      status: "success",
      *      code: 200,
      *      data: { "post": { "id": 2, "title": "Another blog post", "body": "More content" }}
      *  }
-     * @example Deleting data
+     * @example Delete a Thing
      *  {
      *      status: "success",
      *      code: 200,
