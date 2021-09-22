@@ -1,22 +1,5 @@
 import React, { useState } from "react";
-import {
-    Container,
-    Button,
-    Grid,
-    Typography,
-    TextField,
-    styled,
-    lighten
-} from "@mui/material";
-
-const LoginButton = styled(Button)(({ theme }) => ({
-    borderRadius: 500, // setting a very big border-radius, makes the shape appear pill-like
-    background: "#000",
-    color: "#fff",
-    "&:hover": {
-        background: lighten("#000", 0.1)
-    }
-}));
+import { Container, Button, Grid, Typography, TextField } from "@mui/material";
 
 const Login = () => {
     /**
