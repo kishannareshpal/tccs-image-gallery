@@ -43,7 +43,7 @@ class Controller extends BaseController
         // Validate status code
         if (($statusCode < 200) || ($statusCode > 299)) {
             // The http status code is out of the standard server related error codes
-            throw new Exception("Please specify a valid Sucess HTTP statusCode (that is between 200-299). You provided `" . $statusCode . "`");
+            throw new Exception("Please specify a valid Success HTTP statusCode (that is between 200-299). You provided `" . $statusCode . "`");
         }
 
         return response()->json(
