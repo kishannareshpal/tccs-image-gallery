@@ -4,10 +4,11 @@ import {
     Box,
     AppBar as MuiAppBar,
     Toolbar,
+    Link as MuiLink,
     Button,
     styled
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 import useUser from "../hooks/useUser";
 import AppLogoPNG from "../assets/images/app_logo.png";
@@ -19,8 +20,21 @@ const AppBar = styled(MuiAppBar)({
     borderBottom: "1px solid #dedede"
 });
 
+const NavBarLink = styled(MuiLink, {
+    shouldForwardProp: prop => prop !== "black"
+})(({ black }) => ({
+    borderRadius: 100,
+    padding: "8px 16px",
+    backgroundColor: black ? "#000" : "transparent",
+    color: black ? "#fff" : "#000"
+}));
+
 const NavBar = () => {
-    const { user, isAuthenticated, setUser } = useUser();
+    const { isAuthenticated } = useUser();
+    const location = useLocation();
+
+    const isAtAuthPage = () =>
+        location.pathname === "/login" || location.pathname === "/register";
 
     return (
         <AppBar elevation={0} position="sticky">
@@ -30,18 +44,29 @@ const NavBar = () => {
                         <img src={AppLogoPNG} alt="App logo" height={48} />
                     </Link>
                     <Box sx={{ flexGrow: 1 }} />
-                    {!isAuthenticated ? (
-                        <Button
-                            component={Link}
-                            to="/login"
-                            variant="light"
-                            sx={{ px: 2 }}
-                        >
-                            Login
-                        </Button>
-                    ) : (
-                        <LogoutButton />
+                    {!isAuthenticated && !isAtAuthPage() && (
+                        <>
+                            <NavBarLink
+                                underline="none"
+                                component={Link}
+                                to="/login"
+                                sx={{ mr: 1 }}
+                            >
+                                Login
+                            </NavBarLink>
+
+                            <NavBarLink
+                                black
+                                underline="none"
+                                component={Link}
+                                to="/register"
+                            >
+                                Register
+                            </NavBarLink>
+                        </>
                     )}
+
+                    {isAuthenticated && <LogoutButton />}
                 </Toolbar>
             </Container>
         </AppBar>
