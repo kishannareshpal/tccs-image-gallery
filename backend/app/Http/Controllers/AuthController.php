@@ -94,13 +94,23 @@ class AuthController extends Controller
             if (!$token) {
                 // Username is also not a match
                 // Incorrect credentials.
-                return $this->respondWithClientFailure(null, "Incorrect credentials", 401);
+                return $this->respondWithClientFailure(null, "Incorrect email, username or password", 401);
             }
         }
 
         // Authenticate
         $user = Auth::user();
         return $this->respondWithToken($user->email, $user->full_name, $token, "Authenticated", 200);
+    }
+
+
+    /**
+     * Logout the currently authenticated user
+     */
+    public function logout()
+    {
+        Auth::logout();
+        return $this->respondWithSuccess(null);
     }
 
 
@@ -120,8 +130,8 @@ class AuthController extends Controller
                 "token" => $token,
                 "token_type" => "bearer",
                 "expires_in" => null,
-                "message" => $message
-            ]
+            ],
+            "message" => $message
         ];
         return $this->respondWithSuccess($data);
     }
