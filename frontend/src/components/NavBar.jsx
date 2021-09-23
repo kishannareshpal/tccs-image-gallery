@@ -5,7 +5,6 @@ import {
     AppBar as MuiAppBar,
     Toolbar,
     Link as MuiLink,
-    Button,
     styled
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
@@ -21,16 +20,20 @@ const AppBar = styled(MuiAppBar)({
 });
 
 const NavBarLink = styled(MuiLink, {
-    shouldForwardProp: prop => prop !== "black"
-})(({ black }) => ({
+    shouldForwardProp: prop => !["black", "active"].includes(prop)
+})(({ black, active, theme }) => ({
     borderRadius: 100,
     padding: "8px 16px",
     backgroundColor: black ? "#000" : "transparent",
-    color: black ? "#fff" : "#000"
+    color: black ? "#fff" : "#000",
+    ...(active && {
+        color: theme.palette.primary.main,
+        fontWeight: 800
+    })
 }));
 
 const NavBar = () => {
-    const { isAuthenticated } = useUser();
+    const { user, isAuthenticated } = useUser();
     const location = useLocation();
 
     const isAtAuthPage = () =>
@@ -43,7 +46,34 @@ const NavBar = () => {
                     <Link to="/">
                         <img src={AppLogoPNG} alt="App logo" height={48} />
                     </Link>
+
+                    {isAuthenticated && (
+                        <>
+                            <NavBarLink
+                                active={location.pathname === "/"}
+                                underline="none"
+                                component={Link}
+                                to="/"
+                                sx={{ ml: 2 }}
+                            >
+                                Explore
+                            </NavBarLink>
+
+                            <NavBarLink
+                                active={
+                                    location.pathname === `/${user.username}`
+                                }
+                                underline="none"
+                                component={Link}
+                                to={`/${user.username}`}
+                            >
+                                Your Galleries
+                            </NavBarLink>
+                        </>
+                    )}
+
                     <Box sx={{ flexGrow: 1 }} />
+
                     {!isAuthenticated && !isAtAuthPage() && (
                         <>
                             <NavBarLink
