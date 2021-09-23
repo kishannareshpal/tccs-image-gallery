@@ -20,7 +20,6 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('username')->unique();
             $table->string('password', 300);
-            $table->boolean('is_federated')->default(false);
             $table->timestamps();
         });
     }
