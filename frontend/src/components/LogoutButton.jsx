@@ -4,27 +4,25 @@ import useUser from "../hooks/useUser";
 import NetworkServices from "../services/network.services";
 
 const Button = styled(MuiButton, {
-    shouldForwardProp: prop => prop !== "confirming",
-    
+    shouldForwardProp: prop => prop !== "confirming"
 })(({ confirming }) => ({
     borderRadius: 100,
-    border: "2px solid #fddce2",
-    padding: "8px 16px",
+    border: "2px solid #dfdfdf",
+    color: "#000",
+    padding: "4px 16px",
     "&:hover": {
-        backgroundColor: "#fddce2"
+        color: "#DD1C1A",
+        backgroundColor: "#fddce2",
+        borderColor: "#fddce2"
     },
-    ...(confirming
-        ? {
-            borderColor: "#DD1C1A",
-            backgroundColor: "#DD1C1A",
-            color: "#fff",
-            "&:hover": {
-                backgroundColor: lighten("#DD1C1A", 0.2)
-            }
+    ...(confirming && {
+        borderColor: "#DD1C1A",
+        backgroundColor: "#DD1C1A",
+        color: "#fff",
+        "&:hover": {
+            backgroundColor: lighten("#DD1C1A", 0.2)
         }
-        : {
-            color: "#DD1C1A"
-        })
+    })
 }));
 
 const LogoutButton = () => {
