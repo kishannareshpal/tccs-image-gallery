@@ -8,6 +8,8 @@ import {
     styled
 } from "@mui/material";
 import { Link } from "react-router-dom";
+import LogoutButton from "./LogoutButton";
+import useUser from "../hooks/useUser";
 import AppLogoPNG from "../assets/images/app_logo.png";
 
 const AppBar = styled(MuiAppBar)({
@@ -17,25 +19,33 @@ const AppBar = styled(MuiAppBar)({
     borderBottom: "1px solid #dedede"
 });
 
-const NavBar = () => (
-    <AppBar elevation={0} position="sticky">
-        <Container>
-            <Toolbar disableGutters>
-                <Link to="/">
-                    <img src={AppLogoPNG} alt="App logo" height={48} />
-                </Link>
-                <Box sx={{ flexGrow: 1 }} />
-                <Button
-                    component={Link}
-                    to="/login"
-                    variant="light"
-                    sx={{ px: 2 }}
-                >
-                    Login
-                </Button>
-            </Toolbar>
-        </Container>
-    </AppBar>
-);
+const NavBar = () => {
+    const { user, isAuthenticated, setUser } = useUser();
+
+    return (
+        <AppBar elevation={0} position="sticky">
+            <Container>
+                <Toolbar disableGutters>
+                    <Link to="/">
+                        <img src={AppLogoPNG} alt="App logo" height={48} />
+                    </Link>
+                    <Box sx={{ flexGrow: 1 }} />
+                    {!isAuthenticated ? (
+                        <Button
+                            component={Link}
+                            to="/login"
+                            variant="light"
+                            sx={{ px: 2 }}
+                        >
+                            Login
+                        </Button>
+                    ) : (
+                        <LogoutButton />
+                    )}
+                </Toolbar>
+            </Container>
+        </AppBar>
+    );
+};
 
 export default NavBar;

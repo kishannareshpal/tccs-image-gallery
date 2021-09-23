@@ -25,6 +25,10 @@ const theme = createTheme({
         secondary: {
             main: "#000",
             contrastText: "#fff"
+        },
+        negative: {
+            main: "#C64025",
+            contrastText: "#fff"
         }
     },
     shape: {
@@ -53,6 +57,12 @@ const theme = createTheme({
                         color: "#fff",
                         "&:hover": {
                             background: lighten("#000", 0.1)
+                        },
+
+                        "&:disabled": {
+                            color: "#949494",
+                            border: "1px solid #e6e6e6",
+                            background: darken("#fff", 0.01)
                         }
                     }
                 },

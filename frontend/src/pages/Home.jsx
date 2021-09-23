@@ -13,7 +13,7 @@ const Home = () => (
                 <GalleryCard
                     username="@kishannareshpal"
                     description="My personal gallery"
-                    imageThumbnails={["https://source.unsplash.com/random"]}
+                    imageThumbnails={["https://source.unsplash.com/user/mark"]}
                     imageCount={1}
                 />
             </Grid>
@@ -22,8 +22,8 @@ const Home = () => (
                     username="kishannareshpal"
                     imageThumbnails={[
                         "https://source.unsplash.com/user/erondu",
-                        "https://source.unsplash.com/random",
-                        "https://source.unsplash.com/random"
+                        "https://source.unsplash.com/user/alex_quezada",
+                        "https://source.unsplash.com/user/helenngoc"
                     ]}
                     imageCount={4}
                 />
