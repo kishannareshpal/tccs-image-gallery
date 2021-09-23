@@ -19,13 +19,32 @@ const axios = defaultAxios.create({
 /**
  * Authenticate a user with email/username and password.
  *
- * @param {string} emailUsername User's email address or username credential
+ * @param {string} emailUsername User's email address or username
  * @param {string} password User's password
  * @returns
  */
 const login = (emailUsername, password) =>
     axios.post("login", {
         email_username: emailUsername,
+        password
+    });
+
+/**
+ * Authenticate a user with email/username and password.
+ *
+ * @param {string} firstName User's first name
+ * @param {string} lastName User's last name
+ * @param {string} email User's email address or username
+ * @param {string} username User's username
+ * @param {string} password User's password
+ * @returns
+ */
+const register = (firstName, lastName, email, username, password) =>
+    axios.post("register", {
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        username,
         password
     });
 
@@ -50,5 +69,6 @@ export default {
     API_BASE_URL,
     axios,
     login,
+    register,
     logout
 };
