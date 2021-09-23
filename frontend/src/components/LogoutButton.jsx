@@ -1,15 +1,30 @@
 import React, { useState } from "react";
-import { Button as MuiButton, styled } from "@mui/material";
+import { Button as MuiButton, styled, lighten } from "@mui/material";
 import useUser from "../hooks/useUser";
 import NetworkServices from "../services/network.services";
 
-const Button = styled(MuiButton)(({ theme }) => ({
+const Button = styled(MuiButton, {
+    shouldForwardProp: prop => prop !== "confirming",
+    
+})(({ confirming }) => ({
     borderRadius: 100,
-    backgroundColor: "#ffccd5",
-    color: "#9d0208",
+    border: "2px solid #fddce2",
+    padding: "8px 16px",
     "&:hover": {
         backgroundColor: "#fddce2"
-    }
+    },
+    ...(confirming
+        ? {
+            borderColor: "#DD1C1A",
+            backgroundColor: "#DD1C1A",
+            color: "#fff",
+            "&:hover": {
+                backgroundColor: lighten("#DD1C1A", 0.2)
+            }
+        }
+        : {
+            color: "#DD1C1A"
+        })
 }));
 
 const LogoutButton = () => {
@@ -40,7 +55,7 @@ const LogoutButton = () => {
     };
 
     return (
-        <Button sx={{ px: 2 }} onClick={onLogout}>
+        <Button confirming={confirming} onClick={onLogout}>
             {confirming ? "Sure?" : "Logout"}
         </Button>
     );
