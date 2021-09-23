@@ -24,7 +24,7 @@ class AuthController extends Controller
                 "last_name" => "required|string|alpha|min:1|max:255",
                 "username" => "bail|required|alpha_num|unique:users|string|min:3|max:255",
                 "email" => "bail|required|unique:users|email",
-                "password" => "required|min:3"
+                "password" => "required|string|min:3"
             ]);
         } catch (ValidationException $e) {
             return $this->respondWithClientFailure($e->errors(), "Please review your details");
@@ -68,7 +68,7 @@ class AuthController extends Controller
         try {
             $this->validate($request, [
                 "email_username" => "required|string",
-                "password" => "required"
+                "password" => "required|string"
             ]);
         } catch (ValidationException $e) {
             return $this->respondWithClientFailure($e->errors(), "Please review your details", 400);
