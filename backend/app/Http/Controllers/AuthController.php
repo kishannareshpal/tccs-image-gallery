@@ -53,8 +53,10 @@ class AuthController extends Controller
             return $this->respondWithClientFailure(null, "Registered but was unable to login. Please login manually", 401);
         }
 
-        // Return JWT
-        return $this->respondWithToken($user->email, $user->full_name, $token, 201, "Authenticated");
+        // Append the token to the user object
+        $user["token"] = $token;
+        // Registered and authenticated
+        return $this->respondWithToken($user, 201, "Registered and authenticated");
     }
 
 
@@ -100,7 +102,9 @@ class AuthController extends Controller
 
         // Authenticate
         $user = Auth::user();
-        return $this->respondWithToken($user->email, $user->full_name, $token, 200, "Authenticated");
+        // Append the token to the user object
+        $user["token"] = $token;
+        return $this->respondWithToken($user, 200, "Authenticated");
     }
 
 
@@ -115,22 +119,16 @@ class AuthController extends Controller
 
 
     /**
-     * Response wrapper used for returning the user token after Register or Login
+     * Response wrapper used for returning the user after register or login.
      *
-     * @param token The jwt auth token
-     * @param message A meaningful, end-user-readable message.
-     * @param statusCode HTTP status code for this response.
+     * @param user The user object, with an appended token
+     * @param statusCode Success HTTP response status code
+     * @param message An optional meaningful, end-user-readable message.
      */
-    public function respondWithToken($email, $full_name, $token, $statusCode, $message = null)
+    public function respondWithToken($user, $statusCode, $message = null)
     {
         $data = [
-            "user" => [
-                "email" => $email,
-                "full_name" => $full_name,
-                "token" => $token,
-                "token_type" => "bearer",
-                "expires_in" => null,
-            ],
+            "user" => $user,
             "message" => $message
         ];
         return $this->respondWithSuccess($data, $statusCode);
