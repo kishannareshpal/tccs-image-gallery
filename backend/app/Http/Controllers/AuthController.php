@@ -100,7 +100,7 @@ class AuthController extends Controller
 
         // Authenticate
         $user = Auth::user();
-        return $this->respondWithToken($user->email, $user->full_name, $token, 201, "Authenticated");
+        return $this->respondWithToken($user->email, $user->full_name, $token, 200, "Authenticated");
     }
 
 
