@@ -28,18 +28,19 @@ const schema = yup
     .required();
 
 const Login = () => {
-    /**
-     * User's auth details
-     */
     const [redirectUrl, setRedirectUrl] = useState();
     const [shouldDisableInputs, setShouldDisableInputs] = useState(false);
     const [shouldShowPassword, setShouldShowPassword] = useState(false);
     const [serverErrorMessage, setServerErrorMessage] = useState();
+    const [serverErrors, setServerErrors] = useState({});
     const [serverSuccessMessage, setServerSuccessMessage] = useState();
 
     const history = useHistory();
-    const { user, isAuthenticated, setUser } = useUser();
+    const { isAuthenticated, setUser } = useUser();
 
+    /**
+     * Form data
+     */
     const {
         register,
         handleSubmit,
@@ -57,8 +58,9 @@ const Login = () => {
     }, [isAuthenticated]);
 
     const onSubmit = async credentials => {
-        // Clear previous error messages
+        // Clear previous error messages and errors
         setServerErrorMessage(null);
+        setServerErrors({});
         // Disable inputs when processing request
         setShouldDisableInputs(true);
         // Try loging in with given credentials
@@ -68,25 +70,27 @@ const Login = () => {
                 credentials.password
             );
 
-            console.log(data);
-            if (data.status === "client_error") {
+            if (data.code === 400 || data.code === 401) {
                 // Could not login, due to incorrect credentials
                 setServerErrorMessage(data.message);
+                setServerErrors(data.data || {});
                 // Re-enable input for retrial
                 setShouldDisableInputs(false);
-            } else if (data.status === "success") {
-                setUser(data.data.user);
+            } else if (data.code === 200) {
                 setServerSuccessMessage(
                     "You are now logged in and will soon be redirected."
                 );
                 setTimeout(() => {
+                    setUser(data.data.user);
                     // reload this page after 3s
                     // and let useEffect redirect to the next page.
                     history.go(0);
-                }, 3000);
+                }, 4000);
             }
         } catch (error) {
-            console.log("got err", error);
+            setServerErrorMessage(
+                `${error.response.status}: Unfortunately we were unable to log you in. Please try again later`
+            );
 
             // Re-enable inputs for retrial
             setShouldDisableInputs(false);
@@ -135,10 +139,13 @@ const Login = () => {
                             {...register("emailUsername", { required: true })}
                             error={
                                 !!clientErrors.emailUsername?.message ||
-                                !!serverErrorMessage
+                                !!serverErrors.email_username
                             }
                             disabled={shouldDisableInputs}
-                            helperText={clientErrors.emailUsername?.message}
+                            helperText={
+                                serverErrors.email_username ||
+                                clientErrors.emailUsername?.message
+                            }
                             sx={{ mb: 2 }}
                             label="Email or username"
                             variant="filled"
@@ -150,10 +157,13 @@ const Login = () => {
                             {...register("password", { required: true })}
                             error={
                                 !!clientErrors.password?.message ||
-                                !!serverErrorMessage
+                                !!serverErrors.password
                             }
                             disabled={shouldDisableInputs}
-                            helperText={clientErrors.password?.message}
+                            helperText={
+                                serverErrors.password ||
+                                clientErrors.password?.message
+                            }
                             sx={{ mb: 2 }}
                             label="Password"
                             variant="filled"
