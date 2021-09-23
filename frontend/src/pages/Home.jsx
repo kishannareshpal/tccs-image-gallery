@@ -5,7 +5,7 @@ import GalleryCard from "../components/GalleryCard";
 const Home = () => (
     <Container sx={{ py: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 800, mb: 2 }}>
-            Galleries
+            Explore
         </Typography>
 
         <Grid container spacing={2}>
