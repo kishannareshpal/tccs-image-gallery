@@ -20,14 +20,14 @@ class AuthController extends Controller
         // Validate
         try {
             $this->validate($request, [
-                "first_name" => "email",
-                "last_name" => "required|string",
-                "username" => "bail|required|unique:users|string",
+                "first_name" => "required|string|alpha|min:1|max:255",
+                "last_name" => "required|string|alpha|min:1|max:255",
+                "username" => "bail|required|alpha_num|unique:users|string|min:3|max:255",
                 "email" => "bail|required|unique:users|email",
-                "password" => "required"
+                "password" => "required|min:3"
             ]);
         } catch (ValidationException $e) {
-            return $this->respondWithClientFailure($e->errors(), "Invalid request");
+            return $this->respondWithClientFailure($e->errors(), "Please review your details");
         }
 
         // Credentials
@@ -50,11 +50,11 @@ class AuthController extends Controller
         $token = JWTAuth::fromUser($user);
         if (!$token) {
             // Invalid user
-            return $this->respondWithClientFailure(null, "Invalid credentials", 401);
+            return $this->respondWithClientFailure(null, "Registered but was unable to login. Please login manually", 401);
         }
 
         // Return JWT
-        return $this->respondWithToken($user->email, $user->full_name, $token, "Authenticated");
+        return $this->respondWithToken($user->email, $user->full_name, $token, 201, "Authenticated");
     }
 
 
@@ -71,7 +71,7 @@ class AuthController extends Controller
                 "password" => "required"
             ]);
         } catch (ValidationException $e) {
-            return $this->respondWithClientFailure($e->errors(), "Invalid request");
+            return $this->respondWithClientFailure($e->errors(), "Please review your details", 400);
         }
 
         // Grab the credentials from the request inputs
@@ -100,7 +100,7 @@ class AuthController extends Controller
 
         // Authenticate
         $user = Auth::user();
-        return $this->respondWithToken($user->email, $user->full_name, $token, "Authenticated", 200);
+        return $this->respondWithToken($user->email, $user->full_name, $token, 201, "Authenticated");
     }
 
 
@@ -121,7 +121,7 @@ class AuthController extends Controller
      * @param message A meaningful, end-user-readable message.
      * @param statusCode HTTP status code for this response.
      */
-    public function respondWithToken($email, $full_name, $token, $message = null)
+    public function respondWithToken($email, $full_name, $token, $statusCode, $message = null)
     {
         $data = [
             "user" => [
@@ -133,6 +133,6 @@ class AuthController extends Controller
             ],
             "message" => $message
         ];
-        return $this->respondWithSuccess($data);
+        return $this->respondWithSuccess($data, $statusCode);
     }
 }
