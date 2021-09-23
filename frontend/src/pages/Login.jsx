@@ -85,7 +85,7 @@ const Login = () => {
                     // reload this page after 3s
                     // and let useEffect redirect to the next page.
                     history.go(0);
-                }, 4000);
+                }, 3200);
             }
         } catch (error) {
             setServerErrorMessage(
