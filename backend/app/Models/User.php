@@ -32,6 +32,29 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
     ];
 
+
+    /**
+     * The attributes appended to the model's JSON form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'full_name'
+    ];
+
+
+    // Accessors
+    /**
+     * User's full name attriubte
+     * @example use it in your controller as: {@code User::full_name}
+     * @return string the user's full name
+     */
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+
     // JWT
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
