@@ -14,7 +14,7 @@ class GalleryController extends Controller
      */
     public function list()
     {
-        $galleries = Gallery::all();
+        $galleries = Gallery::with("user")->get();
 
         // Return the galleries
         $data = [
