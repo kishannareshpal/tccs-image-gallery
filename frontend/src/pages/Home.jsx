@@ -11,6 +11,7 @@ const Home = () => (
         <Grid container spacing={2}>
             <Grid item xs={4}>
                 <GalleryCard
+                    title="Sample title"
                     username="@kishannareshpal"
                     description="My personal gallery"
                     imageThumbnails={["https://source.unsplash.com/user/mark"]}
@@ -19,6 +20,7 @@ const Home = () => (
             </Grid>
             <Grid item xs={4}>
                 <GalleryCard
+                    title="Another sample title"
                     username="kishannareshpal"
                     imageThumbnails={[
                         "https://source.unsplash.com/user/erondu",
