@@ -54,7 +54,7 @@ class GalleryController extends Controller
         // Validate
         try {
             $this->validate($request, [
-                "title" => "required|string|min:1|max:70",
+                "title" => "required|string|max:70",
                 "description" => "string|max:300|nullable"
             ]);
         } catch (ValidationException $e) {
