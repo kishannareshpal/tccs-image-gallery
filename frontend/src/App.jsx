@@ -95,7 +95,7 @@ const App = () => (
                 <Route exact path="/login">
                     <Login />
                 </Route>
-                <Route exact path="/:user">
+                <Route exact path="/:username">
                     <Profile />
                 </Route>
                 <Route exact path="/register">
