@@ -78,7 +78,7 @@ const logout = token =>
  * Fetch all galleries
  * @returns {Promise<AxiosResponse<any>>}
  */
-const listAllGalleries = () => axios.get("galleries");
+const getAllGalleries = () => axios.get("galleries");
 
 const postGallery = (data, token) =>
     axios.post("galleries", data, {
@@ -106,5 +106,5 @@ export default {
     logout,
     getUserProfile,
     postGallery,
-    listAllGalleries
+    getAllGalleries
 };
