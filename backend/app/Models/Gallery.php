@@ -12,4 +12,13 @@ class Gallery extends Model
      * @var string
      */
     protected $table = "galleries";
+
+
+    /**
+     * Get the user that owns the gallery.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

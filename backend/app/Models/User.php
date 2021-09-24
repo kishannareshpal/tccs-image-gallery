@@ -43,7 +43,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
 
-    // Accessors
+    /* -------------------------------- Accessors ------------------------------- */
     /**
      * User's full name attriubte
      * @example use it in your controller as: {@code User::full_name}
@@ -55,7 +55,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
 
-    // JWT
+    /* ------------------------------ Relationships ----------------------------- */
+    /**
+     * Get all of the galleries associated with this user
+     */
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class);
+    }
+
+
+    /* ----------------------------------- JWT ---------------------------------- */
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
