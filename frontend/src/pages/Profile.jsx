@@ -49,6 +49,7 @@ const newGallerySchema = yup
 const Profile = () => {
     const { username } = useParams();
     const history = useHistory();
+    const [isLoading, setIsLoading] = useState(true);
     const [serverErrorMessage, setServerErrorMessage] = useState();
     const [serverErrors, setServerErrors] = useState({});
     const [shouldDisableInputs, setShouldDisableInputs] = useState(false);
@@ -124,6 +125,7 @@ const Profile = () => {
             } catch (err) {
                 console.log(err);
             }
+            setIsLoading(false);
         };
 
         // Make sure the username param is valid
@@ -137,7 +139,7 @@ const Profile = () => {
         }
     }, [username, history]);
 
-    return isEmpty(userProfile) ? (
+    return isEmpty(userProfile) && !isLoading ? (
         <Container
             sx={{
                 display: "flex",
