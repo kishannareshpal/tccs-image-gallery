@@ -8,6 +8,7 @@ import {
 } from "@mui/material/styles";
 import "@fontsource/inter/variable-full.css";
 import "./App.styles.scss";
+import { Toaster } from "react-hot-toast";
 import { Home, Login, Register, Profile } from "./pages";
 import { NavBar } from "./components";
 
@@ -103,6 +104,7 @@ const App = () => (
                 </Route>
             </Switch>
         </Router>
+        <Toaster position="bottom-center" />
     </ThemeProvider>
 );
 
