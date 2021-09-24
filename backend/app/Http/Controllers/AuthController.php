@@ -113,7 +113,12 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        Auth::logout();
+        try {
+            Auth::logout();
+        } catch (\Throwable $th) {
+            // The token might be expired, which means that the user is already logged out.
+            // So ignore, and simply respond with success
+        }
         return $this->respondWithSuccess(null);
     }
 
