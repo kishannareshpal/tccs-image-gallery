@@ -4,12 +4,12 @@ import {
     Box,
     AppBar as MuiAppBar,
     Toolbar,
-    Link as MuiLink,
     styled
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
-import LogoutButton from "./LogoutButton";
 import useUser from "../hooks/useUser";
+import NavLink from "./NavLink";
+import LogoutButton from "./LogoutButton";
 import AppLogoPNG from "../assets/images/app_logo.png";
 
 const AppBar = styled(MuiAppBar)({
@@ -18,19 +18,6 @@ const AppBar = styled(MuiAppBar)({
     WebkitBackdropFilter: "blur(20px)",
     borderBottom: "1px solid #dedede"
 });
-
-const NavBarLink = styled(MuiLink, {
-    shouldForwardProp: prop => !["black", "active"].includes(prop)
-})(({ black, active, theme }) => ({
-    borderRadius: 100,
-    padding: "8px 16px",
-    backgroundColor: black ? "#000" : "transparent",
-    color: black ? "#fff" : "#000",
-    ...(active && {
-        color: theme.palette.primary.main,
-        fontWeight: 800
-    })
-}));
 
 const NavBar = () => {
     const { user, isAuthenticated } = useUser();
@@ -49,7 +36,7 @@ const NavBar = () => {
 
                     {isAuthenticated && (
                         <>
-                            <NavBarLink
+                            <NavLink
                                 active={location.pathname === "/"}
                                 underline="none"
                                 component={Link}
@@ -57,9 +44,9 @@ const NavBar = () => {
                                 sx={{ ml: 2 }}
                             >
                                 Explore
-                            </NavBarLink>
+                            </NavLink>
 
-                            <NavBarLink
+                            <NavLink
                                 active={
                                     location.pathname === `/${user.username}`
                                 }
@@ -67,8 +54,8 @@ const NavBar = () => {
                                 component={Link}
                                 to={`/${user.username}`}
                             >
-                                Your Galleries
-                            </NavBarLink>
+                                Your Profile
+                            </NavLink>
                         </>
                     )}
 
@@ -76,23 +63,23 @@ const NavBar = () => {
 
                     {!isAuthenticated && !isAtAuthPage() && (
                         <>
-                            <NavBarLink
+                            <NavLink
                                 underline="none"
                                 component={Link}
                                 to="/login"
                                 sx={{ mr: 1 }}
                             >
                                 Login
-                            </NavBarLink>
+                            </NavLink>
 
-                            <NavBarLink
+                            <NavLink
                                 black
                                 underline="none"
                                 component={Link}
                                 to="/register"
                             >
                                 Register
-                            </NavBarLink>
+                            </NavLink>
                         </>
                     )}
 
