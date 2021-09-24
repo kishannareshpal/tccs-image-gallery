@@ -12,7 +12,7 @@ class GalleryController extends Controller
     /**
      * Retrieve all galleries
      */
-    public function listAll()
+    public function list()
     {
         $galleries = Gallery::all();
 
@@ -26,7 +26,7 @@ class GalleryController extends Controller
     /**
      * Retrieve a single gallery by it's ID
      * 
-     * @param int $id gallery id
+     * @param int $id gallery ID
      */
     public function show($id)
     {
