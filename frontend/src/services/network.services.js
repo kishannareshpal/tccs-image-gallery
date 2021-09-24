@@ -80,6 +80,13 @@ const logout = token =>
  */
 const listAllGalleries = () => axios.get("galleries");
 
+const postGallery = (data, token) =>
+    axios.post("galleries", data, {
+        headers: {
+            Authorization: `bearer ${token}`
+        }
+    });
+
 /* -------------------------------------------------------------------------- */
 /*                                 User Routes                                */
 /* -------------------------------------------------------------------------- */
@@ -98,5 +105,6 @@ export default {
     register,
     logout,
     getUserProfile,
+    postGallery,
     listAllGalleries
 };
