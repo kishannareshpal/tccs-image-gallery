@@ -16,6 +16,7 @@ $router->group(["prefix" => "api"], function () use ($router) {
     $router->post("login", "AuthController@login");
     $router->post("register", "AuthController@register");
     $router->post("logout", "AuthController@logout");
+    $router->get("users/{username}", "UserController@profile");
 
 
     /**
@@ -24,6 +25,10 @@ $router->group(["prefix" => "api"], function () use ($router) {
     $router->get("galleries", "GalleryController@list");
     $router->get("galleries/{id}", "GalleryController@show");
 
+
+    /**
+     * Authenticated Routes
+     */
     $router->group(["middleware" => "auth"], function () use ($router) {
         $router->post("galleries", "GalleryController@store");
     });
