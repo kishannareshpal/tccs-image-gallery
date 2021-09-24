@@ -76,10 +76,9 @@ const GalleryCard = ({
                                 alignItems="center"
                                 justifyContent="center"
                                 borderRadius="12px"
-                                border="2px solid #F7F9F9"
                                 title={`Gallery contains ${imageCount} image(s)`}
                             >
-                                <Typography fontWeight={600}>
+                                <Typography fontWeight={800}>
                                     +{imageCount - 3}
                                 </Typography>
                             </Box>
@@ -101,7 +100,7 @@ const GalleryCard = ({
 
 GalleryCard.defaultProps = {
     description: null,
-    imageThumbnailHeight: 146,
+    imageThumbnailHeight: 116,
     imageThumbnails: []
 };
 
