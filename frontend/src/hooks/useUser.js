@@ -7,13 +7,18 @@ import { isEmpty } from "lodash";
  */
 
 /**
- * User type definition
+ * User object type definition
+ *
  * @typedef {object} User
- * @property {string} id - The user's Id
- * @property {string} fullName - The user's full name
- * @property {string} username - The user's username
- * @property {string} email - The user's email address
- * @property {string} token - The user's auth token
+ * @property {string} id User's id
+ * @property {string} first_name User's first name
+ * @property {string} last_name User's last name
+ * @property {string} email User's email address
+ * @property {string} username User's username
+ * @property {string} created_at User's account creation date
+ * @property {string} updated_at User's account update date
+ * @property {string} full_name User's full name
+ * @property {string} token User's auth token
  */
 
 /**
