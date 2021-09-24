@@ -8,10 +8,8 @@ import {
 } from "@mui/material/styles";
 import "@fontsource/inter/variable-full.css";
 import "./App.styles.scss";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import NavBar from "./components/NavBar";
+import { Home, Login, Register, Profile } from "./pages";
+import { NavBar } from "./components";
 
 const theme = createTheme({
     typography: {
@@ -29,6 +27,10 @@ const theme = createTheme({
         negative: {
             main: "#C64025",
             contrastText: "#fff"
+        },
+        light: {
+            main: "#90979e",
+            contrastText: "#000"
         }
     },
     shape: {
@@ -92,6 +94,9 @@ const App = () => (
                 </Route>
                 <Route exact path="/login">
                     <Login />
+                </Route>
+                <Route exact path="/:user">
+                    <Profile />
                 </Route>
                 <Route exact path="/register">
                     <Register />
