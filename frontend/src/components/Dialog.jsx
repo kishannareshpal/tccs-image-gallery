@@ -4,7 +4,8 @@ import {
     DialogActions as MuiDialogActions,
     Button,
     Typography,
-    styled
+    styled,
+    darken
 } from "@mui/material";
 
 /* -------------------------------------------------------------------------- */
@@ -28,14 +29,24 @@ const DialogActionButton = styled(Button, {
         "&:hover": {
             backgroundColor: "#242424",
             color: "#fff"
+        },
+        "&:disabled": {
+            color: "#949494",
+            border: "1px solid #e6e6e6",
+            background: darken("#fff", 0.01)
         }
     }),
     ...(cancel && {
         backgroundColor: "#EFF1F6",
-        color: "#6E7074",
+        color: "#000",
         "&:hover": {
             backgroundColor: "#e9eaed",
-            color: "#6E7074"
+            color: "#000"
+        },
+        "&:disabled": {
+            color: "#949494",
+            border: "1px solid #e6e6e6",
+            background: darken("#fff", 0.01)
         }
     })
 }));
