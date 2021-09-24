@@ -54,7 +54,7 @@ const theme = createTheme({
                 {
                     props: { variant: "black" },
                     style: {
-                        borderRadius: 500, // setting a very big border-radius, makes the shape appear pill-like
+                        borderRadius: 100, // setting a very big border-radius, makes the shape appear pill-like
                         background: "#000",
                         color: "#fff",
                         "&:hover": {
@@ -71,7 +71,7 @@ const theme = createTheme({
                 {
                     props: { variant: "light" },
                     style: {
-                        borderRadius: 500, // setting a very big border-radius, makes the shape appear pill-like
+                        borderRadius: 100, // setting a very big border-radius, makes the shape appear pill-like
                         background: darken("#fff", 0.08),
                         color: "#000",
                         "&:hover": {
