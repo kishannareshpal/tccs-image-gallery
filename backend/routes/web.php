@@ -11,13 +11,17 @@
 $router->group(["prefix" => "api"], function () use ($router) {
 
     /**
-     * Authentication routes
+     * User routes
      */
     $router->post("login", "AuthController@login");
     $router->post("register", "AuthController@register");
     $router->post("logout", "AuthController@logout");
 
-    $router->get("galleries", "GalleryController@listAll");
+
+    /**
+     * Gallery Routes
+     */
+    $router->get("galleries", "GalleryController@list");
     $router->get("galleries/{id}", "GalleryController@show");
 
     $router->group(["middleware" => "auth"], function () use ($router) {
