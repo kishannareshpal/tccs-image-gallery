@@ -42,6 +42,9 @@ const GalleryCard = ({
      * @return the username in lowercase and prefixed with an @
      */
     const formattedUsername = useCallback(() => {
+        if (!username) {
+            return null;
+        }
         const loweredUsername = username.toLowerCase();
         if (username.startsWith("@")) {
             // username is already prefixed with an @ symbol,
