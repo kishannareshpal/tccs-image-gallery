@@ -4,17 +4,20 @@ import {
     Button,
     Typography,
     Stack,
+    Alert,
     styled,
     Box,
     TextField,
     Grid
 } from "@mui/material";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { Add } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { isEmpty } from "lodash";
+import toast from "react-hot-toast";
+import useUser from "../hooks/useUser";
 import {
     Dialog,
     DialogActions,
@@ -36,7 +39,7 @@ const CountSpan = styled("span")(({ theme }) => ({
 /**
  * Validation schema for creating a new gallery
  */
-const schema = yup
+const newGallerySchema = yup
     .object({
         title: yup.string().min(1).max(70).required().label("Title"),
         description: yup.string().optional().max(300).label("Description")
@@ -45,14 +48,20 @@ const schema = yup
 
 const Profile = () => {
     const { username } = useParams();
+    const history = useHistory();
+    const [serverErrorMessage, setServerErrorMessage] = useState();
+    const [serverErrors, setServerErrors] = useState({});
+    const [shouldDisableInputs, setShouldDisableInputs] = useState(false);
+    const { user, isAuthenticated } = useUser();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [userProfile, setUserProfile] = useState({});
     const {
         register,
         handleSubmit,
-        formState: { errors: clientErrors }
+        formState: { errors: clientErrors },
+        reset
     } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(newGallerySchema)
     });
 
     const getUserGalleryCount = () => {
@@ -62,29 +71,89 @@ const Profile = () => {
         return userProfile.galleries.length;
     };
 
-    const onNewGallerySubmit = data => {
-        // TODO: Add a new gallery!
+    const handleDialogClose = () => {
+        setIsDialogOpen(false);
+        // Reset the error messages
+        setServerErrorMessage(null);
+        setServerErrors({});
+        setShouldDisableInputs(false);
+        // Reset the new gallery form values
+        reset();
+    };
+
+    const onNewGallerySubmit = async galleryData => {
+        setShouldDisableInputs(true);
+        try {
+            const { data } = await NetworkServices.postGallery(
+                galleryData,
+                user.token
+            );
+            if (data.code === 200) {
+                // Succesfully saved
+                toast.success("New gallery added!");
+                handleDialogClose();
+                reset();
+            } else if (data.code === 400) {
+                // Invalid request
+                setServerErrorMessage(data.message);
+                setServerErrors(data.data);
+                setShouldDisableInputs(false);
+            } else if (data.code === 401) {
+                // Unauthorized
+                setServerErrorMessage(data.message);
+                setShouldDisableInputs(false);
+            }
+        } catch (err) {
+            console.log(err);
+            setShouldDisableInputs(false);
+        }
     };
 
     useEffect(() => {
-        const fetchUserGalleries = async () => {
+        // Fetch the user profile on load
+        const loadUserProfile = async () => {
             try {
                 const { data } = await NetworkServices.getUserProfile(username);
                 if (data.code === 200) {
                     // Got the galleries
                     setUserProfile(data.data.user);
                 } else if (data.code === 404) {
-                    // No user found
-                    // TODO:
+                    // User not found
+                    setUserProfile({});
                 }
             } catch (err) {
                 console.log(err);
             }
         };
-        fetchUserGalleries();
-    }, [username]);
 
-    return (
+        // Make sure the username param is valid
+        if (username.startsWith("@")) {
+            // Strip out all the @ symbol at the start
+            const normalizedUsername = username.replace(/^@+/g, "");
+            history.push(`/${normalizedUsername}`);
+        } else {
+            // Fetch the user profile
+            loadUserProfile();
+        }
+    }, [username, history]);
+
+    return isEmpty(userProfile) ? (
+        <Container
+            sx={{
+                display: "flex",
+                height: "100vh",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center"
+            }}
+        >
+            <Typography variant="h1">404</Typography>
+            <Typography variant="h4">User @{username} not found</Typography>
+            <Button to="/" sx={{ mt: 2 }} variant="light" component={Link}>
+                Return Home
+            </Button>
+        </Container>
+    ) : (
         <Box>
             <Box
                 sx={{
@@ -99,7 +168,7 @@ const Profile = () => {
                         {userProfile.full_name}
                     </Typography>
                     <Typography
-                        sx={{ fontWeight: 800, color: "light.main" }}
+                        sx={{ fontWeight: 600, color: "light.main" }}
                         variant="h5"
                     >
                         @{username}
@@ -120,13 +189,15 @@ const Profile = () => {
                         Galleries <CountSpan>{getUserGalleryCount()}</CountSpan>
                     </Typography>
 
-                    <Button
-                        onClick={() => setIsDialogOpen(true)}
-                        startIcon={<Add />}
-                        variant="black"
-                    >
-                        New Gallery
-                    </Button>
+                    {isAuthenticated && user.username === username && (
+                        <Button
+                            onClick={() => setIsDialogOpen(true)}
+                            startIcon={<Add />}
+                            variant="black"
+                        >
+                            New Gallery
+                        </Button>
+                    )}
                 </Stack>
 
                 <Grid container spacing={2}>
@@ -149,28 +220,51 @@ const Profile = () => {
 
             <Dialog
                 fullWidth
+                disableEscapeKeyDown={shouldDisableInputs}
+                onBackdropClick={() => !shouldDisableInputs}
                 maxWidth="xs"
-                onClose={() => setIsDialogOpen(false)}
+                onClose={handleDialogClose}
                 open={isDialogOpen}
             >
                 <DialogTitle variant="h5">New Gallery</DialogTitle>
+
                 <form onSubmit={handleSubmit(onNewGallerySubmit)}>
                     <DialogContent>
+                        {serverErrorMessage && (
+                            <Alert severity="error" sx={{ mb: 3 }}>
+                                {serverErrorMessage}
+                            </Alert>
+                        )}
+
                         <TextField
-                            error={!!clientErrors.title?.message}
+                            disabled={shouldDisableInputs}
+                            error={
+                                !!clientErrors.title?.message ||
+                                !!serverErrors.title
+                            }
                             label="Title"
                             {...register("title")}
                             sx={{ mb: 2 }}
-                            helperText={clientErrors.title?.message}
+                            helperText={
+                                serverErrors.title ||
+                                clientErrors.title?.message
+                            }
                             fullWidth
                             variant="outlined"
                         />
                         <TextField
-                            error={!!clientErrors.description?.message}
+                            disabled={shouldDisableInputs}
+                            error={
+                                !!clientErrors.description?.message ||
+                                !!serverErrors.description
+                            }
                             label="Description (optional)"
                             fullWidth
                             {...register("description")}
-                            helperText={clientErrors.description?.message}
+                            helperText={
+                                serverErrors.description ||
+                                clientErrors.description?.message
+                            }
                             multiline
                             rows={4}
                             variant="outlined"
@@ -179,7 +273,8 @@ const Profile = () => {
 
                     <DialogActions>
                         <DialogActionButton
-                            onClick={() => setIsDialogOpen(false)}
+                            disabled={shouldDisableInputs}
+                            onClick={handleDialogClose}
                             cancel
                             size="large"
                             fullWidth
@@ -187,6 +282,7 @@ const Profile = () => {
                             Cancel
                         </DialogActionButton>
                         <DialogActionButton
+                            disabled={shouldDisableInputs}
                             type="submit"
                             confirm
                             size="large"
