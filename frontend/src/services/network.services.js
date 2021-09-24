@@ -1,4 +1,5 @@
-import defaultAxios from "axios";
+// eslint-disable-next-line no-unused-vars
+import defaultAxios, { AxiosResponse } from "axios";
 
 /**
  * Base url for api requests
@@ -16,12 +17,16 @@ const axios = defaultAxios.create({
     }
 });
 
+/* -------------------------------------------------------------------------- */
+/*                            Authentication Routes                           */
+/* -------------------------------------------------------------------------- */
+
 /**
  * Authenticate a user with email/username and password.
  *
  * @param {string} emailUsername User's email address or username
  * @param {string} password User's password
- * @returns
+ * @returns {Promise<AxiosResponse<any>>}
  */
 const login = (emailUsername, password) =>
     axios.post("login", {
@@ -30,14 +35,14 @@ const login = (emailUsername, password) =>
     });
 
 /**
- * Authenticate a user with email/username and password.
+ * Create a new user
  *
  * @param {string} firstName User's first name
  * @param {string} lastName User's last name
  * @param {string} email User's email address or username
  * @param {string} username User's username
  * @param {string} password User's password
- * @returns
+ * @returns {Promise<AxiosResponse<any>>}
  */
 const register = (firstName, lastName, email, username, password) =>
     axios.post("register", {
@@ -52,7 +57,7 @@ const register = (firstName, lastName, email, username, password) =>
  * Log out the current user
  *
  * @param {string} token User's token
- * @returns
+ * @returns {Promise<AxiosResponse<any>>}
  */
 const logout = token =>
     axios.post(
@@ -65,10 +70,33 @@ const logout = token =>
         }
     );
 
+/* -------------------------------------------------------------------------- */
+/*                               Gallery Routes                               */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Fetch all galleries
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+const listAllGalleries = () => axios.get("galleries");
+
+/* -------------------------------------------------------------------------- */
+/*                                 User Routes                                */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Fetch the user profile and return their information, as well as the galleries it owns
+ * @param {string} username user's username
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+const getUserProfile = username => axios.get(`users/${username}`);
+
 export default {
     API_BASE_URL,
     axios,
     login,
     register,
-    logout
+    logout,
+    getUserProfile,
+    listAllGalleries
 };
