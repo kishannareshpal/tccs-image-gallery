@@ -32,6 +32,7 @@ const Img = styled("img")({
 
 const GalleryCard = ({
     username,
+    title,
     description,
     imageThumbnailHeight,
     imageThumbnails,
@@ -89,9 +90,14 @@ const GalleryCard = ({
                     )}
                 </Grid>
             )}
-            <Typography sx={{ fontWeight: 600 }} variant="subtitle1">
+            <Typography sx={{ color: "light.main" }} variant="subtitle1">
                 {formattedUsername()}
             </Typography>
+            {title && (
+                <Typography sx={{ fontWeight: 800 }} paragraph m={0}>
+                    {title}
+                </Typography>
+            )}
             {description && (
                 <Typography paragraph m={0}>
                     {description}
@@ -113,6 +119,10 @@ GalleryCard.propTypes = {
      * Will automatically prefix with @ if not.
      */
     username: PropTypes.string.isRequired,
+    /**
+     * Gallery title
+     */
+    title: PropTypes.string.isRequired,
     /**
      * Gallery description
      * @default null
