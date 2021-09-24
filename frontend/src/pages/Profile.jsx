@@ -154,7 +154,7 @@ const Profile = () => {
             </Button>
         </Container>
     ) : (
-        <Box>
+        <Box sx={{ pb: 12 }}>
             <Box
                 sx={{
                     backgroundColor: "#0B090A",
