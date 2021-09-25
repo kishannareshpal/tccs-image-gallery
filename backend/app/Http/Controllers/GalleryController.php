@@ -14,7 +14,7 @@ class GalleryController extends Controller
      */
     public function list()
     {
-        $galleries = Gallery::with("user")->get();
+        $galleries = Gallery::with("user")->withCount("photos")->get();
 
         // Return the galleries
         $data = [
@@ -30,10 +30,10 @@ class GalleryController extends Controller
      */
     public function show($id)
     {
-        $gallery = Gallery::find($id);
+        $gallery = Gallery::with(["user", "photos"])->find($id);
 
         if (!$gallery) {
-            // Not found
+            // No gallery found
             return $this->respondWithClientFailure(null, "Gallery not found", 404);
         }
 
