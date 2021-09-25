@@ -80,6 +80,8 @@ const logout = token =>
  */
 const getAllGalleries = () => axios.get("galleries");
 
+const getGallery = id => axios.get(`galleries/${id}`);
+
 const postGallery = (data, token) =>
     axios.post("galleries", data, {
         headers: {
@@ -105,6 +107,7 @@ export default {
     register,
     logout,
     getUserProfile,
+    getGallery,
     postGallery,
     getAllGalleries
 };
