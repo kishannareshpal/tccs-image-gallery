@@ -222,7 +222,6 @@ const Profile = () => {
                                     imageThumbnails={[
                                         "https://source.unsplash.com/user/mark"
                                     ]}
-                                    imageCount={1}
                                 />
                             </Grid>
                         ))}

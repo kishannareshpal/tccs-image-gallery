@@ -35,11 +35,11 @@ const GalleryCard = ({
     title,
     description,
     imageThumbnailHeight,
-    imageThumbnails,
-    imageCount
+    imageThumbnails
+    // imageCount
 }) => (
     <div>
-        <Link to={`/${username}/galleries/${galleryId}`}>
+        <Link to={`/galleries/${galleryId}`}>
             <ImgBox>
                 <Img
                     width="100%"
@@ -51,12 +51,13 @@ const GalleryCard = ({
                 <ImgBoxOverlay>
                     <Stack
                         sx={{ m: 2 }}
-                        justifyContent="space-between"
+                        justifyContent="flex-end"
                         direction="row"
                     >
-                        <Typography variant="subtitle1">
+                        {/* TODO: Implement later */}
+                        {/* <Typography variant="subtitle1">
                             {imageCount} Photos
-                        </Typography>
+                        </Typography> */}
                         <Collections />
                     </Stack>
                 </ImgBoxOverlay>
@@ -143,11 +144,12 @@ GalleryCard.propTypes = {
     /**
      * List of image thumbnails srcs. Provide an array of size 3
      */
-    imageThumbnails: PropTypes.arrayOf(PropTypes.string),
+    imageThumbnails: PropTypes.arrayOf(PropTypes.string)
     /**
      * Number of images included in the gallery.
+     * TODO: implement later
      */
-    imageCount: PropTypes.number.isRequired
+    // imageCount: PropTypes.number.isRequired
 };
 
 export default GalleryCard;
