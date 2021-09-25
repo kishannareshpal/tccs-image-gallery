@@ -205,8 +205,16 @@ const Profile = () => {
                 <Grid container spacing={2}>
                     {userProfile.galleries &&
                         userProfile.galleries.map(gallery => (
-                            <Grid key={gallery.id} item xs={4}>
+                            <Grid
+                                key={gallery.id}
+                                item
+                                xs={12}
+                                sm={6}
+                                md={4}
+                                lg={3}
+                            >
                                 <GalleryCard
+                                    galleryId={gallery.id}
                                     username={userProfile.username}
                                     title={gallery.title}
                                     description={gallery.description}

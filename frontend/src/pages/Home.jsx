@@ -27,10 +27,11 @@ const Home = () => {
                 Explore
             </Typography>
 
-            <Grid container spacing={2}>
+            <Grid container columnSpacing={2} rowSpacing={4}>
                 {galleries.map(gallery => (
-                    <Grid key={gallery.id} item xs={4}>
+                    <Grid key={gallery.id} item xs={12} sm={6} md={4} lg={3}>
                         <GalleryCard
+                            galleryId={gallery.id}
                             title={gallery.title}
                             description={gallery.description}
                             username={gallery.user.username}
