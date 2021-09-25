@@ -3,5 +3,17 @@ import NavBar from "./NavBar";
 import GalleryCard from "./GalleryCard";
 import NavLink from "./NavLink";
 import PhotoCard from "./PhotoCard";
+import RoundImage from "./RoundImage";
+import PhotosUploader from "./PhotosUploader";
+import VerySimpleButton from "./VerySimpleButton";
 
-export { LogoutButton, GalleryCard, NavBar, NavLink, PhotoCard };
+export {
+    LogoutButton,
+    GalleryCard,
+    NavBar,
+    NavLink,
+    RoundImage,
+    PhotoCard,
+    PhotosUploader,
+    VerySimpleButton
+};
