@@ -122,58 +122,6 @@ const GalleryCard = ({
             </Box>
         </Stack>
     </div>
-
-    // <Paper elevation={0}>
-    //     {imageThumbnails && (
-    //         <Grid mb={2} container columnSpacing={1.5}>
-    //             {imageThumbnails.map(thumbnailSrc => (
-    //                 <Grid key={thumbnailSrc} item xs>
-    //                     <Img
-    //                         width="100%"
-    //                         height={imageThumbnailHeight}
-    //                         src={thumbnailSrc}
-    //                         alt="Gallery image thumbnail"
-    //                     />
-    //                 </Grid>
-    //             ))}
-
-    //             {imageCount > 3 && (
-    //                 <Grid item xs>
-    //                     <Box
-    //                         display="flex"
-    //                         height={imageThumbnailHeight}
-    //                         alignItems="center"
-    //                         justifyContent="center"
-    //                         borderRadius="12px"
-    //                         title={`Gallery contains ${imageCount} image(s)`}
-    //                     >
-    //                         <Typography fontWeight={800}>
-    //                             +{imageCount - 3}
-    //                         </Typography>
-    //                     </Box>
-    //                 </Grid>
-    //             )}
-    //         </Grid>
-    //     )}
-    //     <Typography
-    //         to={`/${username}`}
-    //         sx={{ color: "light.main" }}
-    //         component={Link}
-    //         variant="subtitle1"
-    //     >
-    //         {username}
-    //     </Typography>
-    //     {title && (
-    //         <Typography sx={{ fontWeight: 800 }} paragraph m={0}>
-    //             {title}
-    //         </Typography>
-    //     )}
-    //     {description && (
-    //         <Typography paragraph m={0}>
-    //             {description}
-    //         </Typography>
-    //     )}
-    // </Paper>
 );
 
 GalleryCard.defaultProps = {
