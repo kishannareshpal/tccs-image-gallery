@@ -92,12 +92,15 @@ const GalleryCard = ({
                 <div>
                     <Typography
                         to={`/${username}/galleries/${galleryId}`}
+                        color="#000"
+                        lineHeight="unset"
                         sx={{
-                            color: "#000",
                             textDecoration: "none",
-                            lineHeight: "unset",
-                            fontWeight: 600
+                            "&:hover": {
+                                textDecoration: "underline"
+                            }
                         }}
+                        fontWeight={600}
                         component={Link}
                         variant="subtitle1"
                     >
@@ -108,11 +111,14 @@ const GalleryCard = ({
                 <div>
                     <Typography
                         to={`/${username}`}
+                        color="#000"
                         sx={{
-                            color: "#000",
                             textDecoration: "none",
-                            fontWeight: 400
+                            "&:hover": {
+                                textDecoration: "underline"
+                            }
                         }}
+                        fontWeight={400}
                         component={Link}
                         variant="subtitle2"
                     >

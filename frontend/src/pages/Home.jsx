@@ -22,8 +22,8 @@ const Home = () => {
     }, []);
 
     return (
-        <Container sx={{ pt: 4, pb: 12 }}>
-            <Typography variant="h4" sx={{ fontWeight: 800, mb: 2 }}>
+        <Container sx={{ py: 12 }}>
+            <Typography variant="h4" fontWeight={800} mb={4}>
                 Explore
             </Typography>
 

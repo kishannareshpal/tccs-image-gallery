@@ -166,11 +166,12 @@ const Profile = () => {
                 }}
             >
                 <Container>
-                    <Typography sx={{ fontWeight: 800, mb: 0 }} variant="h2">
+                    <Typography fontWeight={800} mb={0} variant="h2">
                         {userProfile.full_name}
                     </Typography>
                     <Typography
-                        sx={{ fontWeight: 600, color: "light.main" }}
+                        fontWeight={600}
+                        color="light.main"
                         variant="h5"
                     >
                         @{username}

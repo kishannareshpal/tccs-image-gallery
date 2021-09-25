@@ -154,11 +154,11 @@ const Register = () => {
                 justifyContent="center"
             >
                 <Grid item xs={12} sm={8} md={6} lg={5}>
-                    <Typography variant="h4" sx={{ fontWeight: 800 }}>
+                    <Typography variant="h4" fontWeight={800}>
                         Create an Account
                     </Typography>
 
-                    <Typography component="div" sx={{ fontWeight: 400, mb: 2 }}>
+                    <Typography component="div" fontWeight={400} mb={2}>
                         View and share beautiful photos for everyone to enjoy.
                     </Typography>
 
@@ -234,7 +234,7 @@ const Register = () => {
                                 startAdornment: (
                                     <InputAdornment
                                         position="start"
-                                        sx={{ fontWeight: "600" }}
+                                        fontWeight={600}
                                     >
                                         @
                                     </InputAdornment>

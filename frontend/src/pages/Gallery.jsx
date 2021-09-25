@@ -1,9 +1,13 @@
 import React from "react";
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 const Gallery = () => (
-    <Container>
-        <h1>Gallery page! Show all images from the gallery here!</h1>
+    <Container sx={{ py: 12 }}>
+        <Typography variant="h1" fontWeight={800} marginBottom>
+            My first gallery
+        </Typography>
+        <Typography variant="h5">Kishan Jadav</Typography>
+        <Typography variant="subtitle2">@kishannareshpal</Typography>
     </Container>
 );
 

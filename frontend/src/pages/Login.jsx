@@ -113,11 +113,11 @@ const Login = () => {
                 justifyContent="center"
             >
                 <Grid item xs={12} sm={8} md={6} lg={5}>
-                    <Typography variant="h4" sx={{ fontWeight: 800 }}>
+                    <Typography variant="h4" fontWeight={800}>
                         Login
                     </Typography>
 
-                    <Typography component="div" sx={{ fontWeight: 400, mb: 2 }}>
+                    <Typography component="div" fontWeight={400} mb={2}>
                         Welcome back!
                     </Typography>
 
