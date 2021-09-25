@@ -9,7 +9,7 @@ import {
 import "@fontsource/inter/variable-full.css";
 import "./App.styles.scss";
 import { Toaster } from "react-hot-toast";
-import { Home, Login, Register, Profile } from "./pages";
+import { Home, Login, Register, Profile, Gallery } from "./pages";
 import { NavBar } from "./components";
 
 const theme = createTheme({
@@ -98,6 +98,9 @@ const App = () => (
                 </Route>
                 <Route exact path="/:username">
                     <Profile />
+                </Route>
+                <Route exact path="/:username/galleries/:galleryId">
+                    <Gallery />
                 </Route>
                 <Route exact path="/register">
                     <Register />
