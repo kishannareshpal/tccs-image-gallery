@@ -30,7 +30,7 @@ const theme = createTheme({
             contrastText: "#fff"
         },
         light: {
-            main: "#90979e",
+            main: "#c7c7c7",
             contrastText: "#000"
         }
     },
@@ -102,7 +102,7 @@ const App = () => (
                 <Route exact path="/:username">
                     <Profile />
                 </Route>
-                <Route exact path="/:username/galleries/:galleryId">
+                <Route exact path="/galleries/:id">
                     <Gallery />
                 </Route>
             </Switch>
