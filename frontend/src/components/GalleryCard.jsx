@@ -1,28 +1,8 @@
 import React from "react";
-import {
-    Paper as MuiPaper,
-    Stack,
-    Box,
-    Typography,
-    darken,
-    styled
-} from "@mui/material";
+import { Stack, Box, Typography, styled } from "@mui/material";
 import { Collections } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-
-/**
- * A rounded paper behind each {@link GalleryCard}
- */
-const Paper = styled(MuiPaper)(({ theme }) => ({
-    padding: theme.spacing(2),
-    border: "1px solid #CFD9DE",
-    borderRadius: 12,
-    "&:hover": {
-        backgroundColor: darken("#fff", 0.03),
-        cursor: "pointer"
-    }
-}));
 
 const ImgBox = styled(Box)({
     position: "relative",
@@ -37,18 +17,17 @@ const Img = styled("img")({
     objectFit: "cover"
 });
 
-const ImgBoxOverlay = styled(Box)(({ theme }) => ({
+const ImgBoxOverlay = styled(Box)({
     position: "absolute",
     borderRadius: 12,
     top: 0,
     left: 0,
     width: "100%",
     height: "100%",
-    transitionDuration: "234ms",
     background:
         "linear-gradient(180deg, rgba(0, 0, 0, 0.475) 0%, rgba(255,255,255,0) 100%)",
     color: "white"
-}));
+});
 
 const GalleryCard = ({
     galleryId,
@@ -66,7 +45,7 @@ const GalleryCard = ({
                     width="100%"
                     height={imageThumbnailHeight}
                     src={`https://source.unsplash.com/random?sig=${title}`}
-                    alt="Gallery image thumbnail"
+                    alt="Gallery photo thumbnail"
                 />
 
                 <ImgBoxOverlay>
@@ -75,7 +54,9 @@ const GalleryCard = ({
                         justifyContent="space-between"
                         direction="row"
                     >
-                        <Typography variant="subtitle1">1 Photos</Typography>
+                        <Typography variant="subtitle1">
+                            {imageCount} Photos
+                        </Typography>
                         <Collections />
                     </Stack>
                 </ImgBoxOverlay>
