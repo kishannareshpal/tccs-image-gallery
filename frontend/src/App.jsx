@@ -96,14 +96,14 @@ const App = () => (
                 <Route exact path="/login">
                     <Login />
                 </Route>
+                <Route exact path="/register">
+                    <Register />
+                </Route>
                 <Route exact path="/:username">
                     <Profile />
                 </Route>
                 <Route exact path="/:username/galleries/:galleryId">
                     <Gallery />
-                </Route>
-                <Route exact path="/register">
-                    <Register />
                 </Route>
             </Switch>
         </Router>
