@@ -3,18 +3,11 @@ import { Stack, Box, Typography, styled } from "@mui/material";
 import { Collections } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import RoundImage from "./RoundImage";
 
 const ImgBox = styled(Box)({
     position: "relative",
     cursor: "pointer"
-});
-
-/**
- * The image tag, but rounded and with the photo which cover's the container
- */
-const Img = styled("img")({
-    borderRadius: 12,
-    objectFit: "cover"
 });
 
 const ImgBoxOverlay = styled(Box)({
@@ -41,7 +34,7 @@ const GalleryCard = ({
     <div>
         <Link to={`/galleries/${galleryId}`}>
             <ImgBox>
-                <Img
+                <RoundImage
                     width="100%"
                     height={imageThumbnailHeight}
                     src={`https://source.unsplash.com/random?sig=${title}`}
