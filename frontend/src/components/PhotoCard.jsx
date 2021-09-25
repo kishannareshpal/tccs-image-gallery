@@ -1,15 +1,11 @@
 import React from "react";
-import { Button, Stack, Typography, Box, styled } from "@mui/material";
-import { Delete } from "@mui/icons-material";
+import RoundImage from "./RoundImage";
 
-const Img = styled("img")({
-    borderRadius: 12,
-    objectFit: "cover",
-    cursor: "zoom-in"
-});
+// TODO: proptypes
 
 const PhotoCard = ({ url, onClick, imageThumbnailHeight }) => (
-    <Img
+    <RoundImage
+        sx={{ cursor: "zoom-in" }}
         onClick={onClick}
         width="100%"
         height={imageThumbnailHeight}
