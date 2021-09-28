@@ -81,6 +81,19 @@ const postGalleryPhotos = (galleryId, formData, token) =>
         }
     });
 
+const deletePhoto = (photoId, token) =>
+    axios.post(
+        "galleries/photos",
+        {
+            photo_id: photoId
+        },
+        {
+            headers: {
+                Authorization: `bearer ${token}`
+            }
+        }
+    );
+
 /* -------------------------------------------------------------------------- */
 /*                               Gallery Routes                               */
 /* -------------------------------------------------------------------------- */
@@ -121,5 +134,6 @@ export default {
     getGallery,
     postGallery,
     postGalleryPhotos,
+    deletePhoto,
     getAllGalleries
 };
