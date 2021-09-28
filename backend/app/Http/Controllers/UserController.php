@@ -14,13 +14,11 @@ class UserController extends Controller
     public function profile($username)
     {
         // Get the user with the specified username
-        $user = User::where("username", $username)->first();
+        $user = User::where("username", $username)->with(["galleries", "galleries.thumbnail"])->first();
         if (!isset($user)) {
             // No user with the specified username was found
             return $this->respondWithClientFailure(null, "The account does not exist", 404);
         }
-
-        $user = $user->with(["galleries", "galleries.thumbnail"])->get()->first();
 
         $data = [
             "user" => $user
