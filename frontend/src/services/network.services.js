@@ -74,6 +74,14 @@ const logout = token =>
 /*                                Photos Routes                               */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Upload photos for a specific gallery
+ *
+ * @param {string} galleryId The ID of the gallery where the photos belong
+ * @param {FormData} formData Data containing an array of photos files. photos[]
+ * @param {string} token User's token
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 const postGalleryPhotos = (galleryId, formData, token) =>
     axios.post(`galleries/${galleryId}/photos`, formData, {
         headers: {
@@ -81,6 +89,13 @@ const postGalleryPhotos = (galleryId, formData, token) =>
         }
     });
 
+/**
+ * Delete a single photo by the ID
+ *
+ * @param {number} photoId The ID of the photo to be deleted
+ * @param {string} token User's token
+ * @returns
+ */
 const deletePhoto = (photoId, token) =>
     axios.post(
         "galleries/photos/delete",
@@ -104,8 +119,20 @@ const deletePhoto = (photoId, token) =>
  */
 const getAllGalleries = () => axios.get("galleries");
 
+/**
+ * Fetch details of a gallery by ID
+ * @param {number} id The ID of the gallery to get
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 const getGallery = id => axios.get(`galleries/${id}`);
 
+/**
+ * Deletes a gallery and all of the photos within.
+ *
+ * @param {number} galleryId The ID of the gallery to delete
+ * @param {string} token User's token
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 const deleteGallery = (galleryId, token) =>
     axios.post(
         "galleries/delete",
@@ -119,6 +146,13 @@ const deleteGallery = (galleryId, token) =>
         }
     );
 
+/**
+ * Create a new gallery
+ *
+ * @param {object} data The gallery details
+ * @param {string} token User's token
+ * @returns {Promise<AxiosResponse<any>>}
+ */
 const postGallery = (data, token) =>
     axios.post("galleries", data, {
         headers: {
