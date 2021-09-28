@@ -10,6 +10,7 @@ import {
     TextField,
     Grid
 } from "@mui/material";
+import { useImmer } from "use-immer";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { Add } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
@@ -55,7 +56,7 @@ const Profile = () => {
     const [shouldDisableInputs, setShouldDisableInputs] = useState(false);
     const { user, isAuthenticated } = useUser();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [userProfile, setUserProfile] = useState();
+    const [userProfile, setUserProfile] = useImmer();
     const {
         register,
         handleSubmit,
@@ -92,6 +93,10 @@ const Profile = () => {
             if (data.code === 200) {
                 // Succesfully saved
                 toast.success("New gallery added!");
+                const newGallery = data.data.gallery;
+                setUserProfile(draft => {
+                    draft.galleries.unshift(newGallery);
+                });
                 handleDialogClose();
                 reset();
             } else if (data.code === 400) {
