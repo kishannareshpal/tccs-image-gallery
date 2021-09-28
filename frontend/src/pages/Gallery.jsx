@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useImmer } from "use-immer";
 import {
     Container,
     Box,
@@ -16,7 +17,7 @@ import { PhotoCard, PhotosUploader, Lightbox } from "../components";
 const Gallery = () => {
     const { id } = useParams();
     const { user, isAuthenticated } = useUser();
-    const [gallery, setGallery] = useState();
+    const [gallery, setGallery] = useImmer();
     const [isLoading, setIsLoading] = useState(true);
 
     const [isPreviewShowing, setIsPreviewShowing] = useState(false);
@@ -45,7 +46,7 @@ const Gallery = () => {
             }
         };
         fetchGallery();
-    }, [id]);
+    }, [id, setGallery]);
 
     if (isLoading) return null;
     return !gallery ? (
@@ -95,6 +96,13 @@ const Gallery = () => {
                     <PhotosUploader
                         onPhotoPreview={photoURL => {
                             previewPhoto(photoURL);
+                        }}
+                        onUploadComplete={uploadedPhotos => {
+                            // New photos were uploaded
+                            // Add them to the current list of the gallery photos!
+                            setGallery(draft => {
+                                draft.photos.unshift(...uploadedPhotos);
+                            });
                         }}
                         galleryId={gallery.id}
                     />
