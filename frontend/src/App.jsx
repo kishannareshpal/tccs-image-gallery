@@ -77,6 +77,12 @@ const theme = createTheme({
                         color: "#000",
                         "&:hover": {
                             background: darken("#fff", 0.15)
+                        },
+
+                        "&:disabled": {
+                            color: "#949494",
+                            border: "1px solid #e6e6e6",
+                            background: darken("#fff", 0.01)
                         }
                     }
                 }
