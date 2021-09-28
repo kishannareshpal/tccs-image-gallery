@@ -5,7 +5,7 @@ import RoundImage from "./RoundImage";
 
 const PhotoCard = ({ url, onClick, imageThumbnailHeight }) => (
     <RoundImage
-        sx={{ cursor: "zoom-in" }}
+        sx={{ cursor: "zoom-in", boxShadow: 1 }}
         onClick={onClick}
         width="100%"
         height={imageThumbnailHeight}
