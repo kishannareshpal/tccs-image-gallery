@@ -2,13 +2,22 @@
 
 ### Getting Started
 
-#### Note
+#### Notes
 
--   Your database should be created before migrating. The `.env` uses the `imagegallery` database by default. (as it is shown in step 2.2)
+-   The database should be created before migration. The `.env` uses the `imagegallery` database by default. (as it is shown in step 2.2)
 -   For storing photos the app uses the Amazon AWS S3 service. In order to get started, please:
 
     1. Sign in to the AWS S3 Console
     2. Create a bucket named `tccsimagegallery` in the `us-east-2` region and with `all` public access allowed.
+
+-   The default PHP configurations from `php.ini` allows for a very small upload sizes. For the app, I would recommend updating the following settings:
+
+    ```INI
+    ; because the app upload allows for 10 files, 10MB max each.
+    upload_max_filesize = 10M
+    max_file_uploads = 10 ; at least
+    post_max_size = 250M
+    ```
 
  <hr>
 
