@@ -6,6 +6,7 @@ import PhotoCard from "./PhotoCard";
 import RoundImage from "./RoundImage";
 import PhotosUploader from "./PhotosUploader";
 import VerySimpleButton from "./VerySimpleButton";
+import Lightbox from "./Lightbox";
 
 export {
     LogoutButton,
@@ -15,5 +16,6 @@ export {
     RoundImage,
     PhotoCard,
     PhotosUploader,
-    VerySimpleButton
+    VerySimpleButton,
+    Lightbox
 };
