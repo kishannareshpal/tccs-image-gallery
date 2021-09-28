@@ -62,6 +62,9 @@ class PhotoController extends Controller
         // Grab the photos files being uploaded
         $photos = $request->file("photos");
 
+        // This array will hold the models added to db, which are the uploaded photos
+        $uploaded_photos = [];
+
         /**
          * Generator function, which converts the Photos Files into Aws\CommandInterface objects.
          * 
@@ -69,7 +72,7 @@ class PhotoController extends Controller
          * @param string $bucketName AWS S3 bucket, where the photos will be put
          * @param string $directoryPath The path of the directory where the photo will be stored
          */
-        $commandGenerator = function ($photos, $bucketName, $bucketRegion, $directoryPath) use ($s3Client, $user_id, $id) {
+        $commandGenerator = function ($photos, $bucketName, $bucketRegion, $directoryPath) use ($s3Client, $user_id, $id, &$uploaded_photos) {
             foreach ($photos as $photo) {
                 // Prepare the filename for the Photo
                 $photoExt = $photo->extension(); // get the original photo's extension (png|jpg, etc)
@@ -90,6 +93,8 @@ class PhotoController extends Controller
                 $p->full_size_url = "https://$bucketName.s3.$bucketRegion.amazonaws.com/$directoryPath/photos/$photoFileName";
                 $p->thumbnail_url = "https://$bucketName.s3.$bucketRegion.amazonaws.com/$directoryPath/thumbnails/$photoFileName";
                 $p->update();
+
+                $uploaded_photos[] = $p;
 
                 // Generate a 192x192 thumbnail for the photo
                 $thumbnailPhotoStream = $this->createThumbnail($photo, 300);
@@ -113,15 +118,20 @@ class PhotoController extends Controller
 
         // Generate the commands
         $commands = $commandGenerator($photos, $bucketName, $bucketRegion, $directoryPath);
+
         // Create the pool, by applying the generated commands
         $pool = new CommandPool($s3Client, $commands, [
-            'concurrency' => 5, // only send 5 files at time
+            "concurrency" => 5 // only send 5 files at time
         ]);
 
         // Initiate the pool (upload)
         $promise = $pool->promise();
         $promise->wait(); // Synchronously
-        return $this->respondWithSuccess(null);
+
+        $data = [
+            "uploaded_photos" => $uploaded_photos
+        ];
+        return $this->respondWithSuccess($data);
     }
 
 
