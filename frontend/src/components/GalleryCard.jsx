@@ -4,6 +4,7 @@ import { Collections } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import RoundImage from "./RoundImage";
+import EmptyGalleryPNG from "../assets/images/empty_gallery.png";
 
 const ImgBox = styled(Box)({
     position: "relative",
@@ -33,16 +34,12 @@ const GalleryCard = ({
     <div>
         <Link to={`/galleries/${galleryId}`}>
             <ImgBox>
-                {thumbnailURL ? (
-                    <RoundImage
-                        width="100%"
-                        height={thumbnailHeight}
-                        src={thumbnailURL}
-                        alt={`Gallery ${galleryId} thumbnail`}
-                    />
-                ) : (
-                    <Box width="100%" height={thumbnailHeight} />
-                )}
+                <RoundImage
+                    width="100%"
+                    height={thumbnailHeight}
+                    src={thumbnailURL || EmptyGalleryPNG}
+                    alt={`Gallery ${galleryId} thumbnail`}
+                />
 
                 <ImgBoxOverlay>
                     <Stack
