@@ -83,7 +83,7 @@ const postGalleryPhotos = (galleryId, formData, token) =>
 
 const deletePhoto = (photoId, token) =>
     axios.post(
-        "galleries/photos",
+        "galleries/photos/delete",
         {
             photo_id: photoId
         },
@@ -105,6 +105,19 @@ const deletePhoto = (photoId, token) =>
 const getAllGalleries = () => axios.get("galleries");
 
 const getGallery = id => axios.get(`galleries/${id}`);
+
+const deleteGallery = (galleryId, token) =>
+    axios.post(
+        "galleries/delete",
+        {
+            gallery_id: galleryId
+        },
+        {
+            headers: {
+                Authorization: `bearer ${token}`
+            }
+        }
+    );
 
 const postGallery = (data, token) =>
     axios.post("galleries", data, {
@@ -135,5 +148,6 @@ export default {
     postGallery,
     postGalleryPhotos,
     deletePhoto,
+    deleteGallery,
     getAllGalleries
 };
