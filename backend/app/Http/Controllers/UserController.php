@@ -20,7 +20,7 @@ class UserController extends Controller
             return $this->respondWithClientFailure(null, "The account does not exist", 404);
         }
 
-        $user = $user->with("galleries")->get()->first();
+        $user = $user->with(["galleries", "galleries.thumbnail"])->get()->first();
 
         $data = [
             "user" => $user
