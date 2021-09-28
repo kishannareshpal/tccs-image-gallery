@@ -35,9 +35,11 @@ const Home = () => {
                             title={gallery.title}
                             description={gallery.description}
                             username={gallery.user.username}
-                            imageThumbnails={[
-                                "https://source.unsplash.com/user/mark"
-                            ]}
+                            thumbnailURL={
+                                gallery.thumbnail
+                                    ? gallery.thumbnail.thumbnail_url
+                                    : null
+                            }
                         />
                     </Grid>
                 ))}

@@ -55,7 +55,7 @@ const Profile = () => {
     const [shouldDisableInputs, setShouldDisableInputs] = useState(false);
     const { user, isAuthenticated } = useUser();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [userProfile, setUserProfile] = useState({});
+    const [userProfile, setUserProfile] = useState();
     const {
         register,
         handleSubmit,
@@ -105,7 +105,9 @@ const Profile = () => {
                 setShouldDisableInputs(false);
             }
         } catch (err) {
-            console.log(err);
+            setServerErrorMessage(
+                "Could not create a new gallery. Please try again"
+            );
             setShouldDisableInputs(false);
         }
     };
@@ -116,14 +118,14 @@ const Profile = () => {
             try {
                 const { data } = await NetworkServices.getUserProfile(username);
                 if (data.code === 200) {
-                    // Got the galleries
+                    // Got the profile
                     setUserProfile(data.data.user);
                 } else if (data.code === 404) {
                     // User not found
-                    setUserProfile({});
+                    setUserProfile(null);
                 }
             } catch (err) {
-                console.log(err);
+                // Could not load the user
             }
             setIsLoading(false);
         };
@@ -139,7 +141,8 @@ const Profile = () => {
         }
     }, [username, history]);
 
-    return isEmpty(userProfile) && !isLoading ? (
+    if (isLoading) return null;
+    return !userProfile && !isLoading ? (
         <Container
             sx={{
                 display: "flex",
@@ -149,7 +152,9 @@ const Profile = () => {
                 alignItems: "center"
             }}
         >
-            <Typography variant="h1">404</Typography>
+            <Typography variant="h1" fontWeight={800}>
+                404
+            </Typography>
             <Typography variant="h4">User @{username} not found</Typography>
             <Button to="/" sx={{ mt: 2 }} variant="light" component={Link}>
                 Return Home
@@ -216,12 +221,14 @@ const Profile = () => {
                             >
                                 <GalleryCard
                                     galleryId={gallery.id}
-                                    username={userProfile.username}
                                     title={gallery.title}
                                     description={gallery.description}
-                                    imageThumbnails={[
-                                        "https://source.unsplash.com/user/mark"
-                                    ]}
+                                    username={userProfile.username}
+                                    thumbnailURL={
+                                        gallery.thumbnail
+                                            ? gallery.thumbnail.thumbnail_url
+                                            : null
+                                    }
                                 />
                             </Grid>
                         ))}
