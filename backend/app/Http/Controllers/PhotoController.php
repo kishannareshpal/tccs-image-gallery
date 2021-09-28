@@ -53,7 +53,7 @@ class PhotoController extends Controller
         // path to the directory where the photo will be uploaded in the s3 bucket
         $directoryPath = "galleries/${id}";
 
-        // create the client: credentials are infered through Environment Variables
+        // Create the client: Credentials are infered from the Environment Variables
         $s3Client = new S3Client([
             'version'     => "latest",
             'region'      => $bucketRegion
@@ -132,6 +132,95 @@ class PhotoController extends Controller
             "uploaded_photos" => $uploaded_photos
         ];
         return $this->respondWithSuccess($data);
+    }
+
+
+    /**
+     * Delete a single photo in the gallery, by ID
+     */
+    public function destroy(Request $request)
+    {
+        // Validate
+        try {
+            $this->validate($request, [
+                "photo_id" => "required",
+            ]);
+        } catch (ValidationException $e) {
+            return $this->respondWithClientFailure($e->errors(), "Could not delete the photo");
+        }
+
+        $photo_id = $request->input("photo_id");
+        $user_id = Auth::user()->id;
+        $photo = Photo::find($photo_id);
+
+        // Check if photo exists
+        if (!$photo) {
+            return $this->respondWithClientFailure(null, "Could not find the photo to delete", 404);
+        }
+
+        // Check if the authenticated user has permission to delete the photo.
+        // - basically if they are the owner
+        $is_owner = $photo->user_id === $user_id;
+        if (!$is_owner) {
+            // Not the owner, prevent and 401 out!
+            return $this->respondWithClientFailure(null, "Photo could not be deleted. Unauthorized", 401);
+        }
+
+
+        // Delete the object from the AWS S3 Bucket
+        // name of the bucket where the photos located
+        $bucketName = "tccsimagegallery";
+        $bucketRegion = "us-east-2";
+        // path to the directory where the photos are located in the s3 bucket
+        $galleryID = $photo->gallery_id;
+        $directoryPath = "galleries/$galleryID";
+
+        // The name of the thumbnail and original size photos
+        $photoFileName = $photo->filename;
+
+        // Create the client: Credentials are infered from the Environment Variables
+        $s3Client = new S3Client([
+            'version'     => "latest",
+            'region'      => $bucketRegion
+        ]);
+
+        /**
+         * Generator function, which yields the thumbnail and the photo deletion Aws\CommandInterface objects.
+         * 
+         * @param \Iterator $photos The photos files being uploaded
+         * @param string $bucketName AWS S3 bucket, where the photos will be put
+         * @param string $directoryPath The path of the directory where the photo will be stored
+         */
+        $commandGenerator = function ($bucketName, $directoryPath, $photoFileName) use ($s3Client) {
+            // Yield a command that will be executed by the pool (Deletes the thumbnail of the image)
+            yield $s3Client->getCommand('DeleteObject', [
+                "Bucket" => $bucketName,
+                "Key" => "$directoryPath/thumbnails/$photoFileName",
+            ]);
+
+            // Yield a command that will be executed by the pool (Deletes the full size image)
+            yield $s3Client->getCommand('DeleteObject', [
+                "Bucket" => $bucketName,
+                "Key" => "$directoryPath/photos/$photoFileName",
+            ]);
+        };
+
+        // Generate the commands
+        $commands = $commandGenerator($bucketName, $directoryPath, $photoFileName);
+
+        // Create the pool, by applying the generated commands
+        $pool = new CommandPool($s3Client, $commands, [
+            "concurrency" => 2, // only send 5 files at time
+        ]);
+        // Initiate the pool (delete)
+        $promise = $pool->promise();
+        $promise->wait(); // Synchronously
+
+        // Remove from db
+        $photo->delete();
+
+        // Return 200
+        return $this->respondWithSuccess(null);
     }
 
 
