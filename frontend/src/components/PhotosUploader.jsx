@@ -38,7 +38,7 @@ const HiddenInput = styled("input")({
     display: "none"
 });
 
-const PhotoUploader = ({
+const PhotosUploader = ({
     galleryId,
     onPhotoPreview,
     maxSizePerFileInBytes
@@ -332,12 +332,12 @@ const PhotoUploader = ({
     );
 };
 
-PhotoUploader.defaultProps = {
+PhotosUploader.defaultProps = {
     maxSizePerFileInBytes: 8000000 // 8 MegaBytes
 };
 
-PhotoUploader.propTypes = {
+PhotosUploader.propTypes = {
     maxSizePerFileInBytes: PropTypes.number
 };
 
-export default PhotoUploader;
+export default PhotosUploader;
