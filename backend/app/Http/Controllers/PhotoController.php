@@ -149,9 +149,8 @@ class PhotoController extends Controller
             return $this->respondWithClientFailure($e->errors(), "Could not delete the photo");
         }
 
-        $photo_id = $request->input("photo_id");
-        $user_id = Auth::user()->id;
-        $photo = Photo::find($photo_id);
+        $photoId = $request->input("photo_id");
+        $photo = Photo::find($photoId);
 
         // Check if photo exists
         if (!$photo) {
@@ -160,12 +159,12 @@ class PhotoController extends Controller
 
         // Check if the authenticated user has permission to delete the photo.
         // - basically if they are the owner
-        $is_owner = $photo->user_id === $user_id;
-        if (!$is_owner) {
+        $userId = Auth::user()->id;
+        $isOwner = $photo->user_id === $userId;
+        if (!$isOwner) {
             // Not the owner, prevent and 401 out!
             return $this->respondWithClientFailure(null, "Photo could not be deleted. Unauthorized", 401);
         }
-
 
         // Delete the object from the AWS S3 Bucket
         // name of the bucket where the photos located
