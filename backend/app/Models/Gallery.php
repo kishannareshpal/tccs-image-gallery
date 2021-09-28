@@ -22,6 +22,11 @@ class Gallery extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function thumbnail()
+    {
+        return $this->hasOne(Photo::class);
+    }
+
     /**
      * Get the photos that belong to the gallery
      */
