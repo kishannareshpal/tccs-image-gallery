@@ -26,20 +26,23 @@ const GalleryCard = ({
     galleryId,
     username,
     title,
-    description,
-    imageThumbnailHeight,
-    imageThumbnails
+    thumbnailHeight,
+    thumbnailURL
     // imageCount
 }) => (
     <div>
         <Link to={`/galleries/${galleryId}`}>
             <ImgBox>
-                <RoundImage
-                    width="100%"
-                    height={imageThumbnailHeight}
-                    src={`https://source.unsplash.com/random?sig=${title}`}
-                    alt="Gallery photo thumbnail"
-                />
+                {thumbnailURL ? (
+                    <RoundImage
+                        width="100%"
+                        height={thumbnailHeight}
+                        src={thumbnailURL}
+                        alt={`Gallery ${galleryId} thumbnail`}
+                    />
+                ) : (
+                    <Box width="100%" height={thumbnailHeight} />
+                )}
 
                 <ImgBoxOverlay>
                     <Stack
@@ -106,9 +109,8 @@ const GalleryCard = ({
 );
 
 GalleryCard.defaultProps = {
-    description: null,
-    imageThumbnailHeight: 186,
-    imageThumbnails: []
+    thumbnailHeight: 186,
+    thumbnailURL: null
 };
 
 GalleryCard.propTypes = {
@@ -125,24 +127,26 @@ GalleryCard.propTypes = {
      */
     title: PropTypes.string.isRequired,
     /**
-     * Gallery description
-     * @default null
-     */
-    description: PropTypes.string,
-    /**
      * Gallery thumbnail image height
      * @default 146
      */
-    imageThumbnailHeight: PropTypes.number,
+    thumbnailHeight: PropTypes.number,
     /**
-     * List of image thumbnails srcs. Provide an array of size 3
+     * The gallery thumbnail src url
      */
-    imageThumbnails: PropTypes.arrayOf(PropTypes.string)
+    thumbnailURL: PropTypes.string
+
     /**
      * Number of images included in the gallery.
      * TODO: implement later
      */
-    // imageCount: PropTypes.number.isRequired
+    // imageCount: PropTypes.number.isRequired,
+    /**
+     * Gallery description
+     * TODO: implement later
+     * @default null
+     */
+    //  description: PropTypes.string,
 };
 
 export default GalleryCard;
