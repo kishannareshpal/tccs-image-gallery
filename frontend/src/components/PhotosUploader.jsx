@@ -41,7 +41,8 @@ const HiddenInput = styled("input")({
 const PhotosUploader = ({
     galleryId,
     onPhotoPreview,
-    maxSizePerFileInBytes
+    maxSizePerFileInBytes,
+    onUploadComplete
 }) => {
     const { user } = useUser();
     const [selectedPhotosFiles, setSelectedPhotosFiles] = useState([]);
@@ -208,6 +209,13 @@ const PhotosUploader = ({
                     toast.success("Succesfully uploaded to the gallery!");
                     // Clear the previously selected photos.
                     setSelectedPhotosFiles([]);
+                    if (onUploadComplete)
+                        onUploadComplete(data.data.uploaded_photos);
+                } else if (data.code === 401) {
+                    // Unauthorized
+                    setErrorMessage(
+                        "You are not authorized to upload photos into this gallery. Please login as the owner and try again."
+                    );
                 } else if (data.code === 400) {
                     // Error on upload
                     setErrorMessage(data.message);
@@ -222,7 +230,7 @@ const PhotosUploader = ({
                 setIsUploading(false);
             }
         },
-        [galleryId, selectedPhotosFiles, user.token]
+        [galleryId, onUploadComplete, selectedPhotosFiles, user.token]
     );
 
     return (
@@ -333,11 +341,33 @@ const PhotosUploader = ({
 };
 
 PhotosUploader.defaultProps = {
-    maxSizePerFileInBytes: 8000000 // 8 MegaBytes
+    maxSizePerFileInBytes: 8000000, // 8 MegaBytes
+    onUploadComplete: null
 };
 
 PhotosUploader.propTypes = {
-    maxSizePerFileInBytes: PropTypes.number
+    /**
+     * The ID of the gallery where the photos will be uploaded
+     */
+    galleryId: PropTypes.number.isRequired,
+
+    /**
+     * Handle the selected photo preview, on click.
+     * @param {string} photoURL The Src/URL of the photo to be previewed
+     */
+    onPhotoPreview: PropTypes.func.isRequired,
+
+    /**
+     * Maximum allowed size in bytes per photo file
+     * @default 8000000 // 8MB
+     */
+    maxSizePerFileInBytes: PropTypes.number,
+
+    /**
+     * Handle the completion of the upload process.
+     * Used for updating the list of photos, by appending the new ones.
+     */
+    onUploadComplete: PropTypes.func
 };
 
 export default PhotosUploader;
