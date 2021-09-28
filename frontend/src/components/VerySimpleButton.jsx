@@ -12,6 +12,10 @@ const VerySimpleButton = styled("button")({
 
     "&:hover": {
         color: "#747474"
+    },
+
+    "&:disabled": {
+        color: "#949494"
     }
 });
 
