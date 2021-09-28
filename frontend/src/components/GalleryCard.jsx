@@ -66,7 +66,7 @@ const GalleryCard = ({
             <Box sx={{ ml: 2 }}>
                 <div>
                     <Typography
-                        to={`/${username}/galleries/${galleryId}`}
+                        to={`/galleries/${galleryId}`}
                         color="#000"
                         lineHeight="unset"
                         sx={{
