@@ -10,9 +10,15 @@ import {
 } from "@mui/material";
 
 import { Link, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 import useUser from "../hooks/useUser";
 import NetworkServices from "../services/network.services";
-import { PhotoCard, PhotosUploader, Lightbox } from "../components";
+import {
+    PhotoCard,
+    PhotosUploader,
+    Lightbox,
+    VerySimpleButton
+} from "../components";
 
 const Gallery = () => {
     const { id } = useParams();
@@ -47,6 +53,24 @@ const Gallery = () => {
         };
         fetchGallery();
     }, [id, setGallery]);
+
+    const onPhotoDelete = photoId => {
+        NetworkServices.deletePhoto(photoId, user.token).then(({ data }) => {
+            if (data.code === 200) {
+                toast.success("Photo deleted!");
+            } else {
+                toast.error(data.message);
+            }
+        });
+
+        // Remove the image right away for UX reasons.
+        setGallery(draft => {
+            const index = draft.photos.findIndex(photo => photo.id === photoId);
+            if (index !== -1) {
+                draft.photos.splice(index, 1);
+            }
+        });
+    };
 
     if (isLoading) return null;
     return !gallery ? (
@@ -127,6 +151,14 @@ const Gallery = () => {
                                 }
                                 url={photo.thumbnail_url}
                             />
+                            {isAuthenticated &&
+                                user.username === gallery.user.username && (
+                                <VerySimpleButton
+                                    onClick={() => onPhotoDelete(photo.id)}
+                                >
+                                        Delete
+                                </VerySimpleButton>
+                            )}
                         </Grid>
                     ))}
                 </Grid>
