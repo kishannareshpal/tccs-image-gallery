@@ -197,6 +197,7 @@ export default {
     postGallery,
     postGalleryPhotos,
     deletePhoto,
+    updateGallery,
     deleteGallery,
     getAllGalleries
 };
