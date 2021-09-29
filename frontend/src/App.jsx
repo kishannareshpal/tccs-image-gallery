@@ -39,6 +39,33 @@ const theme = createTheme({
     },
 
     components: {
+        MuiIconButton: {
+            variants: [
+                {
+                    props: { variant: "light" },
+                    style: {
+                        background: "#F9F9F9",
+                        color: "#000",
+                        "&:hover": {
+                            background: darken("#F9F9F9", 0.05)
+                        }
+                    }
+                },
+                {
+                    props: { variant: "negative" },
+                    style: {
+                        background: "#F9F9F9",
+                        color: "#000",
+                        "&:hover": {
+                            color: "#DD1C1A",
+                            backgroundColor: "#fddce2",
+                            borderColor: "#fddce2"
+                        }
+                    }
+                }
+            ]
+        },
+
         MuiButton: {
             variants: [
                 {
