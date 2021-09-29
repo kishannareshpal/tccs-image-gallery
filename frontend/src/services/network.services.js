@@ -127,7 +127,22 @@ const getAllGalleries = () => axios.get("galleries");
 const getGallery = id => axios.get(`galleries/${id}`);
 
 /**
- * Deletes a gallery and all of the photos within.
+ * Updates the gallery details
+ *
+ * @param {number} galleryId The ID of the gallery to update
+ * @param {object} data The gallery details
+ * @param {string} token User's token
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+const updateGallery = (galleryId, data, token) =>
+    axios.put(`galleries/${galleryId}`, data, {
+        headers: {
+            Authorization: `bearer ${token}`
+        }
+    });
+
+/**
+ * Deletes a gallery and all of the photos within
  *
  * @param {number} galleryId The ID of the gallery to delete
  * @param {string} token User's token

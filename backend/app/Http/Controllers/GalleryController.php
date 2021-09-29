@@ -87,6 +87,62 @@ class GalleryController extends Controller
 
 
     /**
+     * Update the gallery details
+     * 
+     * @param Request $request
+     */
+    public function update(Request $request, $id)
+    {
+        // Validate
+        try {
+            $this->validate($request, [
+                "title" => "required_without:description|string|max:70",
+                "description" => "required_without:title|string|max:300|nullable"
+            ]);
+        } catch (ValidationException $e) {
+            return $this->respondWithClientFailure($e->errors(), "Could not update the gallery details");
+        }
+
+        $gallery = Gallery::find($id);
+
+        // Check if gallery exists
+        if (!$gallery) {
+            return $this->respondWithClientFailure(null, "Could not find the gallery to edit", 404);
+        }
+
+        // Check if the authenticated user has permission to update the gallery details.
+        // - basically if they are the owner
+        $userId = Auth::user()->id;
+        $isOwner = $gallery->user_id === $userId;
+        if (!$isOwner) {
+            // Not the owner, prevent and 401 out!
+            return $this->respondWithClientFailure(null, "Gallery could not be edited. Unauthorized", 401);
+        }
+
+        $title = $request->input("title");
+        if (isset($title)) {
+            // Update the title
+            $gallery->title = $title;
+        }
+
+        $description = $request->input("description");
+        if (isset($description)) {
+            // Update the description
+            $gallery->title = $description;
+        }
+
+        // Save the changes
+        $gallery->save();
+
+        // Return the edited gallery
+        $data = [
+            "gallery" => $gallery
+        ];
+        return $this->respondWithSuccess($data);
+    }
+
+
+    /**
      * Destroy a gallery
      * 
      * @param Request $request

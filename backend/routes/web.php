@@ -31,6 +31,7 @@ $router->group(["prefix" => "api"], function () use ($router) {
      */
     $router->group(["middleware" => "auth"], function () use ($router) {
         $router->post("galleries", "GalleryController@store");
+        $router->put("galleries/{id}", "GalleryController@update");
         $router->post("galleries/delete", "GalleryController@destroy");
         $router->post("galleries/photos/delete", "PhotoController@destroy");
         $router->post("galleries/{id}/photos", "PhotoController@store");
