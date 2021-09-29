@@ -72,8 +72,8 @@ class GalleryController extends Controller
         // Save
         $gallery = new Gallery();
         $gallery->title = $title;
-        if (isset($description)) {
-            $gallery->description = $description;
+        if ($request->has("description")) {
+            $gallery->description = $request->input("description");
         }
         $gallery->user_id = $user->id;
         $gallery->save();
@@ -119,16 +119,14 @@ class GalleryController extends Controller
             return $this->respondWithClientFailure(null, "Gallery could not be edited. Unauthorized", 401);
         }
 
-        $title = $request->input("title");
-        if (isset($title)) {
+        if ($request->has("title")) {
             // Update the title
-            $gallery->title = $title;
+            $gallery->title = $request->input("title");
         }
 
-        $description = $request->input("description");
-        if (isset($description)) {
+        if ($request->has("description")) {
             // Update the description
-            $gallery->title = $description;
+            $gallery->description = $request->input("description");
         }
 
         // Save the changes
