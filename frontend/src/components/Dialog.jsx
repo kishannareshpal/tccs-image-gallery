@@ -19,11 +19,12 @@ const Dialog = styled(MuiDialog)({
 });
 
 const DialogActionButton = styled(Button, {
-    shouldForwardProp: props => !["confirm", "cancel"].includes(props)
-})(({ confirm, cancel }) => ({
+    shouldForwardProp: props =>
+        !["confirmType", "cancelType", "negativeType"].includes(props)
+})(({ negativeType, confirmType, cancelType }) => ({
     borderRadius: 12,
     textTransform: "none",
-    ...(confirm && {
+    ...(confirmType && {
         backgroundColor: "#000",
         color: "#fff",
         "&:hover": {
@@ -36,7 +37,20 @@ const DialogActionButton = styled(Button, {
             background: darken("#fff", 0.01)
         }
     }),
-    ...(cancel && {
+    ...(negativeType && {
+        backgroundColor: "#e73511",
+        color: "#fff",
+        "&:hover": {
+            backgroundColor: "#c53f25",
+            color: "#fff"
+        },
+        "&:disabled": {
+            color: "#949494",
+            border: "1px solid #e6e6e6",
+            background: darken("#fff", 0.01)
+        }
+    }),
+    ...(cancelType && {
         backgroundColor: "#EFF1F6",
         color: "#000",
         "&:hover": {
