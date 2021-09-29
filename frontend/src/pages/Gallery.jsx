@@ -6,11 +6,25 @@ import {
     Grid,
     Typography,
     Divider,
-    Button
+    IconButton,
+    Stack,
+    Button,
+    TextField,
+    Alert
 } from "@mui/material";
-
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, Redirect } from "react-router-dom";
 import toast from "react-hot-toast";
+import { EditOutlined, DeleteOutlineSharp } from "@mui/icons-material";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import {
+    Dialog,
+    DialogActions,
+    DialogTitle,
+    DialogContent,
+    DialogActionButton
+} from "../components/Dialog";
 import useUser from "../hooks/useUser";
 import NetworkServices from "../services/network.services";
 import {
@@ -20,14 +34,78 @@ import {
     VerySimpleButton
 } from "../components";
 
+/**
+ * Validation schema for creating a new gallery
+ */
+const editGallerySchema = yup
+    .object({
+        title: yup.string().min(1).max(70).required().label("Title"),
+        description: yup.string().optional().max(300).label("Description")
+    })
+    .required();
+
 const Gallery = () => {
     const { id } = useParams();
     const { user, isAuthenticated } = useUser();
     const [gallery, setGallery] = useImmer();
     const [isLoading, setIsLoading] = useState(true);
 
+    const [redirectUrl, setRedirectUrl] = useState("");
+
     const [isPreviewShowing, setIsPreviewShowing] = useState(false);
+    const [isDeleteModalShowing, setIsDeleteModalShowing] = useState(false);
+    const [isEditModalShowing, setIsEditModalShowing] = useState(false);
+
     const [previewPhotoURL, setPreviewPhotoURL] = useState("");
+
+    const [serverErrorMessage, setServerErrorMessage] = useState();
+    const [serverErrors, setServerErrors] = useState({});
+    const [shouldDisableInputs, setShouldDisableInputs] = useState(false);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors: clientErrors },
+        reset
+    } = useForm({
+        resolver: yupResolver(editGallerySchema)
+    });
+
+    const openDeleteModal = () => {
+        setIsDeleteModalShowing(true);
+    };
+    const closeDeleteModal = () => setIsDeleteModalShowing(false);
+
+    const openEditModal = () => setIsEditModalShowing(true);
+    const closeEditModal = () => {
+        setIsEditModalShowing(false);
+        // Reset the error messages
+        setServerErrorMessage(null);
+        setServerErrors({});
+        setShouldDisableInputs(false);
+        // Reset the edit gallery form values
+        reset();
+    };
+
+    const onGalleryEdit = async galleryData => {
+        setShouldDisableInputs(true);
+        // TODO: implementation
+    };
+
+    const onGalleryDelete = () => {
+        setShouldDisableInputs(true);
+        NetworkServices.deleteGallery(gallery.id, user.token).then(
+            ({ data }) => {
+                if (data.code === 200) {
+                    toast.success(`Gallery ${gallery.title} was deleted!`);
+                    setRedirectUrl(`/${user.username}`);
+                } else {
+                    toast.error(data.message);
+                }
+            }
+        );
+
+        // Remove the image right away for UX reasons.
+    };
 
     const previewPhoto = photoURL => {
         setPreviewPhotoURL(photoURL);
@@ -73,6 +151,9 @@ const Gallery = () => {
     };
 
     if (isLoading) return null;
+    if (redirectUrl) {
+        return <Redirect to={redirectUrl} />;
+    }
     return !gallery ? (
         <Container
             sx={{
@@ -95,7 +176,7 @@ const Gallery = () => {
         <Container sx={{ pt: 6, pb: 12 }}>
             <Box textAlign="center">
                 <Box>
-                    <Typography variant="h1" fontWeight={800} mb={4}>
+                    <Typography variant="h1" fontWeight={800} mb={2}>
                         {gallery.title}
                     </Typography>
                     {gallery.description && (
@@ -117,19 +198,38 @@ const Gallery = () => {
                 </Box>
 
                 {isAuthenticated && user.username === gallery.user.username && (
-                    <PhotosUploader
-                        onPhotoPreview={photoURL => {
-                            previewPhoto(photoURL);
-                        }}
-                        onUploadComplete={uploadedPhotos => {
-                            // New photos were uploaded
-                            // Add them to the current list of the gallery photos!
-                            setGallery(draft => {
-                                draft.photos.unshift(...uploadedPhotos);
-                            });
-                        }}
-                        galleryId={gallery.id}
-                    />
+                    <Box mt={2}>
+                        <Stack
+                            direction="row"
+                            spacing={2}
+                            justifyContent="center"
+                        >
+                            <IconButton variant="light" onClick={openEditModal}>
+                                <EditOutlined />
+                            </IconButton>
+
+                            <IconButton
+                                variant="negative"
+                                onClick={openDeleteModal}
+                            >
+                                <DeleteOutlineSharp />
+                            </IconButton>
+                        </Stack>
+
+                        <PhotosUploader
+                            onPhotoPreview={photoURL => {
+                                previewPhoto(photoURL);
+                            }}
+                            onUploadComplete={uploadedPhotos => {
+                                // New photos were uploaded
+                                // Add them to the current list of the gallery photos!
+                                setGallery(draft => {
+                                    draft.photos.unshift(...uploadedPhotos);
+                                });
+                            }}
+                            galleryId={gallery.id}
+                        />
+                    </Box>
                 )}
             </Box>
 
@@ -163,6 +263,123 @@ const Gallery = () => {
                     ))}
                 </Grid>
             )}
+
+            <Dialog
+                fullWidth
+                disableEscapeKeyDown={shouldDisableInputs}
+                onBackdropClick={() => !shouldDisableInputs}
+                maxWidth="xs"
+                onClose={closeDeleteModal}
+                open={isDeleteModalShowing}
+            >
+                <DialogTitle variant="h5">Delete {gallery.title}</DialogTitle>
+                <DialogContent>
+                    <Typography paragraph>
+                        Deleting this gallery will also permanently delete all
+                        of the photos uploaded to it.
+                    </Typography>
+                </DialogContent>
+
+                <DialogActions>
+                    <DialogActionButton
+                        disabled={shouldDisableInputs}
+                        onClick={closeDeleteModal}
+                        cancelType
+                        size="large"
+                        fullWidth
+                    >
+                        Cancel
+                    </DialogActionButton>
+                    <DialogActionButton
+                        disabled={shouldDisableInputs}
+                        type="submit"
+                        onClick={onGalleryDelete}
+                        negativeType
+                        size="large"
+                        fullWidth
+                    >
+                        Delete
+                    </DialogActionButton>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                fullWidth
+                disableEscapeKeyDown={shouldDisableInputs}
+                onBackdropClick={() => !shouldDisableInputs}
+                maxWidth="xs"
+                onClose={closeEditModal}
+                open={isEditModalShowing}
+            >
+                <DialogTitle variant="h5">Edit Gallery</DialogTitle>
+
+                <form onSubmit={handleSubmit(onGalleryEdit)}>
+                    <DialogContent>
+                        {serverErrorMessage && (
+                            <Alert severity="error" sx={{ mb: 3 }}>
+                                {serverErrorMessage}
+                            </Alert>
+                        )}
+
+                        <TextField
+                            disabled={shouldDisableInputs}
+                            error={
+                                !!clientErrors.title?.message ||
+                                !!serverErrors.title
+                            }
+                            label="Title"
+                            defaultValue={gallery.title}
+                            {...register("title")}
+                            sx={{ mb: 2 }}
+                            helperText={
+                                serverErrors.title ||
+                                clientErrors.title?.message
+                            }
+                            fullWidth
+                            variant="outlined"
+                        />
+                        <TextField
+                            disabled={shouldDisableInputs}
+                            error={
+                                !!clientErrors.description?.message ||
+                                !!serverErrors.description
+                            }
+                            defaultValue={gallery.description}
+                            label="Description (optional)"
+                            fullWidth
+                            {...register("description")}
+                            helperText={
+                                serverErrors.description ||
+                                clientErrors.description?.message
+                            }
+                            multiline
+                            rows={4}
+                            variant="outlined"
+                        />
+                    </DialogContent>
+
+                    <DialogActions>
+                        <DialogActionButton
+                            disabled={shouldDisableInputs}
+                            onClick={closeEditModal}
+                            cancelType
+                            size="large"
+                            fullWidth
+                        >
+                            Cancel
+                        </DialogActionButton>
+                        <DialogActionButton
+                            disabled={shouldDisableInputs}
+                            type="submit"
+                            confirmType
+                            size="large"
+                            fullWidth
+                        >
+                            Save
+                        </DialogActionButton>
+                    </DialogActions>
+                </form>
+            </Dialog>
 
             <Lightbox
                 open={isPreviewShowing}
