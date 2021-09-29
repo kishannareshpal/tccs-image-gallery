@@ -297,7 +297,7 @@ const Profile = () => {
                         <DialogActionButton
                             disabled={shouldDisableInputs}
                             onClick={handleDialogClose}
-                            cancel
+                            cancelType
                             size="large"
                             fullWidth
                         >
@@ -306,7 +306,7 @@ const Profile = () => {
                         <DialogActionButton
                             disabled={shouldDisableInputs}
                             type="submit"
-                            confirm
+                            confirmType
                             size="large"
                             fullWidth
                         >
