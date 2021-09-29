@@ -67,7 +67,6 @@ class GalleryController extends Controller
 
         // Grab the gallery details 
         $title = $request->input("title");
-        $description = $request->input("description");
 
         // Save
         $gallery = new Gallery();
@@ -96,8 +95,8 @@ class GalleryController extends Controller
         // Validate
         try {
             $this->validate($request, [
-                "title" => "required_without:description|string|max:70",
-                "description" => "required_without:title|string|max:300|nullable"
+                "title" => "string|max:70",
+                "description" => "string|max:300|nullable"
             ]);
         } catch (ValidationException $e) {
             return $this->respondWithClientFailure($e->errors(), "Could not update the gallery details");
