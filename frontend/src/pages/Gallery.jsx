@@ -272,7 +272,9 @@ const Gallery = () => {
                 onClose={closeDeleteModal}
                 open={isDeleteModalShowing}
             >
-                <DialogTitle variant="h5">Delete {gallery.title}</DialogTitle>
+                <DialogTitle variant="h5">
+                    Delete &#34;{gallery.title}&#34;
+                </DialogTitle>
                 <DialogContent>
                     <Typography paragraph>
                         Deleting this gallery will also permanently delete all
