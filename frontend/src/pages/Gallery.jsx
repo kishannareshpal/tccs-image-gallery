@@ -67,6 +67,10 @@ const Gallery = () => {
         formState: { errors: clientErrors },
         reset
     } = useForm({
+        defaultValues: {
+            title: "",
+            description: ""
+        },
         resolver: yupResolver(editGallerySchema)
     });
 
@@ -76,19 +80,54 @@ const Gallery = () => {
     const closeDeleteModal = () => setIsDeleteModalShowing(false);
 
     const openEditModal = () => setIsEditModalShowing(true);
-    const closeEditModal = () => {
-        setIsEditModalShowing(false);
+    const closeEditModal = (_, shouldNotReset) => {
         // Reset the error messages
+        setIsEditModalShowing(false);
         setServerErrorMessage(null);
         setServerErrors({});
         setShouldDisableInputs(false);
-        // Reset the edit gallery form values
-        reset();
+
+        // Reset the edit form values to original
+        if (!shouldNotReset) {
+            reset({ title: gallery.title, description: gallery.description });
+        }
     };
 
-    const onGalleryEdit = async galleryData => {
+    const onGalleryEdit = async updatedGalleryData => {
         setShouldDisableInputs(true);
-        // TODO: implementation
+        try {
+            const { data } = await NetworkServices.updateGallery(
+                gallery.id,
+                updatedGalleryData,
+                user.token
+            );
+            if (data.code === 200) {
+                // Succesfully saved
+                toast.success("Changes saved");
+                const editedGallery = data.data.gallery;
+                setGallery(draft => {
+                    // Apply changes to the page
+                    const tempDraft = draft;
+                    tempDraft.title = editedGallery.title;
+                    tempDraft.description = editedGallery.description;
+                });
+                closeEditModal(null, true);
+            } else if (data.code === 400) {
+                // Invalid request
+                setServerErrorMessage(data.message);
+                setServerErrors(data.data);
+                setShouldDisableInputs(false);
+            } else if (data.code === 401) {
+                // Unauthorized
+                setServerErrorMessage(data.message);
+                setShouldDisableInputs(false);
+            }
+        } catch (err) {
+            setServerErrorMessage(
+                "Could not update the gallery. Please try again"
+            );
+            setShouldDisableInputs(false);
+        }
     };
 
     const onGalleryDelete = () => {
@@ -96,15 +135,13 @@ const Gallery = () => {
         NetworkServices.deleteGallery(gallery.id, user.token).then(
             ({ data }) => {
                 if (data.code === 200) {
-                    toast.success(`Gallery ${gallery.title} was deleted!`);
+                    toast.success(`Gallery "${gallery.title}" was deleted!`);
                     setRedirectUrl(`/${user.username}`);
                 } else {
                     toast.error(data.message);
                 }
             }
         );
-
-        // Remove the image right away for UX reasons.
     };
 
     const previewPhoto = photoURL => {
@@ -122,7 +159,14 @@ const Gallery = () => {
                 const { data } = await NetworkServices.getGallery(id);
                 if (data.code === 200) {
                     // Success
-                    setGallery(data.data.gallery);
+                    const fetchedGallery = data.data.gallery;
+                    setGallery(fetchedGallery);
+
+                    // Update the default values
+                    reset({
+                        title: fetchedGallery.title,
+                        description: fetchedGallery.description
+                    });
                 }
                 setIsLoading(false);
             } catch (error) {
@@ -130,7 +174,7 @@ const Gallery = () => {
             }
         };
         fetchGallery();
-    }, [id, setGallery]);
+    }, [id, setGallery, reset]);
 
     const onPhotoDelete = photoId => {
         NetworkServices.deletePhoto(photoId, user.token).then(({ data }) => {
@@ -330,7 +374,6 @@ const Gallery = () => {
                                 !!serverErrors.title
                             }
                             label="Title"
-                            defaultValue={gallery.title}
                             {...register("title")}
                             sx={{ mb: 2 }}
                             helperText={
@@ -346,7 +389,6 @@ const Gallery = () => {
                                 !!clientErrors.description?.message ||
                                 !!serverErrors.description
                             }
-                            defaultValue={gallery.description}
                             label="Description (optional)"
                             fullWidth
                             {...register("description")}
