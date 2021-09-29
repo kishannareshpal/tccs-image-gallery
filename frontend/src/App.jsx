@@ -9,7 +9,7 @@ import {
 import "@fontsource/inter/variable-full.css";
 import "./App.styles.scss";
 import { Toaster } from "react-hot-toast";
-import { Home, Login, Register, Profile, Gallery } from "./pages";
+import { Home, Login, Register, Profile, Gallery, Error } from "./pages";
 import { NavBar } from "./components";
 
 const theme = createTheme({
@@ -137,6 +137,9 @@ const App = () => (
                 </Route>
                 <Route exact path="/galleries/:id">
                     <Gallery />
+                </Route>
+                <Route path="*">
+                    <Error title="Page Not Found" />
                 </Route>
             </Switch>
         </Router>

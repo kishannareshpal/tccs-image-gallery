@@ -11,13 +11,14 @@ import {
     Grid
 } from "@mui/material";
 import { useImmer } from "use-immer";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { Add } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { isEmpty } from "lodash";
 import toast from "react-hot-toast";
+import Error from "./Error";
 import useUser from "../hooks/useUser";
 import {
     Dialog,
@@ -144,27 +145,11 @@ const Profile = () => {
             // Fetch the user profile
             loadUserProfile();
         }
-    }, [username, history]);
+    }, [username, history, setUserProfile]);
 
     if (isLoading) return null;
     return !userProfile && !isLoading ? (
-        <Container
-            sx={{
-                display: "flex",
-                height: "100vh",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center"
-            }}
-        >
-            <Typography variant="h1" fontWeight={800}>
-                404
-            </Typography>
-            <Typography variant="h4">User @{username} not found</Typography>
-            <Button to="/" sx={{ mt: 2 }} variant="light" component={Link}>
-                Return Home
-            </Button>
-        </Container>
+        <Error title="User Not Found" description={`@${username}`} />
     ) : (
         <Box sx={{ pb: 12 }}>
             <Box
