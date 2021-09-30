@@ -15,6 +15,7 @@ import {
 import { Link, useParams, Redirect } from "react-router-dom";
 import toast from "react-hot-toast";
 import { EditOutlined, DeleteOutlineSharp } from "@mui/icons-material";
+import pluralize from "pluralize";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -177,9 +178,13 @@ const Gallery = () => {
 
         // Remove the image right away for UX reasons.
         setGallery(draft => {
-            const index = draft.photos.findIndex(photo => photo.id === photoId);
+            const tempDraft = draft;
+            const index = tempDraft.photos.findIndex(
+                photo => photo.id === photoId
+            );
             if (index !== -1) {
-                draft.photos.splice(index, 1);
+                tempDraft.photos.splice(index, 1);
+                tempDraft.photos_count -= 1;
             }
         });
     };
@@ -259,7 +264,8 @@ const Gallery = () => {
                         @{gallery.user.username}
                     </Typography>
                     <Typography variant="subtitle1">
-                        {gallery.photos.length} Photos
+                        {gallery.photos_count}{" "}
+                        {pluralize("photo", gallery.photos_count)}
                     </Typography>
                 </Box>
 

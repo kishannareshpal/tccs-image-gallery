@@ -35,11 +35,8 @@ const Home = () => {
                             title={gallery.title}
                             description={gallery.description}
                             username={gallery.user.username}
-                            thumbnailURL={
-                                gallery.thumbnail
-                                    ? gallery.thumbnail.thumbnail_url
-                                    : null
-                            }
+                            photosCount={gallery.photos_count}
+                            thumbnailURL={gallery.thumbnail_url}
                         />
                     </Grid>
                 ))}

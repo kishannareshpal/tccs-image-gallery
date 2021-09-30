@@ -214,11 +214,8 @@ const Profile = () => {
                                     title={gallery.title}
                                     description={gallery.description}
                                     username={userProfile.username}
-                                    thumbnailURL={
-                                        gallery.thumbnail
-                                            ? gallery.thumbnail.thumbnail_url
-                                            : null
-                                    }
+                                    photosCount={gallery.photos_count}
+                                    thumbnailURL={gallery.thumbnail_url}
                                 />
                             </Grid>
                         ))}

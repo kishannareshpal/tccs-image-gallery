@@ -3,6 +3,7 @@ import { Stack, Box, Typography, styled } from "@mui/material";
 import { Collections } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import pluralize from "pluralize";
 import RoundImage from "./RoundImage";
 import DefaultGalleryThumbnailPNG from "../assets/images/default_gallery_thumb.png";
 
@@ -13,13 +14,12 @@ const ImgBox = styled(Box)({
 
 const ImgBoxOverlay = styled(Box)({
     position: "absolute",
+    display: "inline-block",
+    top: 12,
+    pointerEvents: "none",
+    left: 12,
     borderRadius: 12,
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background:
-        "linear-gradient(180deg, rgba(0, 0, 0, 0.475) 0%, rgba(255,255,255,0) 100%)",
+    backgroundColor: "rgba(0, 0, 0, 0.63)",
     color: "white"
 });
 
@@ -28,36 +28,39 @@ const GalleryCard = ({
     username,
     title,
     thumbnailHeight,
-    thumbnailURL
-    // imageCount
+    thumbnailURL,
+    photosCount
 }) => (
     <div>
         <Link to={`/galleries/${galleryId}`}>
-            <ImgBox>
+            <ImgBox sx={{ height: thumbnailHeight }}>
                 <RoundImage
+                    sx={{
+                        border: "2px solid #E8EDF2",
+                        "&:hover": {
+                            transitionDuration: "350ms",
+                            borderColor: "#000"
+                        }
+                    }}
                     width="100%"
-                    height={thumbnailHeight}
+                    height="100%"
                     src={thumbnailURL || DefaultGalleryThumbnailPNG}
                     alt={`Gallery ${galleryId} thumbnail`}
                 />
 
                 <ImgBoxOverlay>
-                    <Stack
-                        sx={{ m: 2 }}
-                        justifyContent="flex-end"
-                        direction="row"
-                    >
-                        {/* TODO: Implement later */}
-                        {/* <Typography variant="subtitle1">
-                            {imageCount} Photos
-                        </Typography> */}
+                    <Stack sx={{ p: 1 }} spacing={1} direction="row">
                         <Collections />
+                        <Typography variant="subtitle2">
+                            {photosCount} {pluralize("photo", photosCount)}
+                        </Typography>
                     </Stack>
                 </ImgBoxOverlay>
             </ImgBox>
         </Link>
 
         <Stack
+            mt={1}
             direction="row"
             alignItems="center"
             overflow="hidden"
@@ -107,7 +110,8 @@ const GalleryCard = ({
 
 GalleryCard.defaultProps = {
     thumbnailHeight: 186,
-    thumbnailURL: null
+    thumbnailURL: null,
+    photosCount: 0
 };
 
 GalleryCard.propTypes = {
@@ -125,19 +129,19 @@ GalleryCard.propTypes = {
     title: PropTypes.string.isRequired,
     /**
      * Gallery thumbnail image height
-     * @default 146
+     * @default 186
      */
     thumbnailHeight: PropTypes.number,
     /**
      * The gallery thumbnail src url
      */
-    thumbnailURL: PropTypes.string
+    thumbnailURL: PropTypes.string,
 
     /**
-     * Number of images included in the gallery.
-     * TODO: implement later
+     * Number of photos included in the gallery.
      */
-    // imageCount: PropTypes.number.isRequired,
+    photosCount: PropTypes.number
+
     /**
      * Gallery description
      * TODO: implement later
