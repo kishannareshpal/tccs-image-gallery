@@ -5,6 +5,7 @@ import { styled } from "@mui/material";
  */
 const RoundImage = styled("img")({
     borderRadius: 12,
+    backgroundColor: "#F5F7FA",
     objectFit: "cover"
 });
 
