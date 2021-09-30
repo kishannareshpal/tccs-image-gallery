@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useImmer } from "use-immer";
 import {
     Container,
@@ -55,6 +55,9 @@ const Gallery = () => {
     const [isPreviewShowing, setIsPreviewShowing] = useState(false);
     const [isDeleteModalShowing, setIsDeleteModalShowing] = useState(false);
     const [isEditModalShowing, setIsEditModalShowing] = useState(false);
+
+    const [confirmingPhotoDeletes, setConfirmingPhotoDeletes] = useImmer([]);
+    const prevConfirmationTimerIdRef = useRef();
 
     const [previewPhotoURL, setPreviewPhotoURL] = useState("");
 
@@ -144,6 +147,34 @@ const Gallery = () => {
         );
     };
 
+    const onPhotoDelete = photoId => {
+        // Whether the deletion of this photo is confirmed by the user
+        const isDeleteConfirmed = confirmingPhotoDeletes.includes(photoId);
+        if (!isDeleteConfirmed) {
+            // Not yet confirmed, ask the user if they are sure they want to delete it
+            setConfirmingPhotoDeletes(draft => {
+                draft.push(photoId);
+            });
+            return;
+        }
+
+        NetworkServices.deletePhoto(photoId, user.token).then(({ data }) => {
+            if (data.code === 200) {
+                toast.success("Photo deleted!");
+            } else {
+                toast.error(data.message);
+            }
+        });
+
+        // Remove the image right away for UX reasons.
+        setGallery(draft => {
+            const index = draft.photos.findIndex(photo => photo.id === photoId);
+            if (index !== -1) {
+                draft.photos.splice(index, 1);
+            }
+        });
+    };
+
     const previewPhoto = photoURL => {
         setPreviewPhotoURL(photoURL);
         setIsPreviewShowing(true);
@@ -176,23 +207,24 @@ const Gallery = () => {
         fetchGallery();
     }, [id, setGallery, reset]);
 
-    const onPhotoDelete = photoId => {
-        NetworkServices.deletePhoto(photoId, user.token).then(({ data }) => {
-            if (data.code === 200) {
-                toast.success("Photo deleted!");
-            } else {
-                toast.error(data.message);
-            }
-        });
+    useEffect(() => {
+        // Reset the confirmation notice of photo deletion back to normal after some time.
 
-        // Remove the image right away for UX reasons.
-        setGallery(draft => {
-            const index = draft.photos.findIndex(photo => photo.id === photoId);
-            if (index !== -1) {
-                draft.photos.splice(index, 1);
-            }
-        });
-    };
+        // Clear any previous timer
+        clearTimeout(prevConfirmationTimerIdRef.current);
+        // Restart a new timer for 3s
+        const confirmationTimerId = setTimeout(() => {
+            setConfirmingPhotoDeletes([]);
+        }, 3000);
+        prevConfirmationTimerIdRef.current = confirmationTimerId;
+        return () => {
+            clearTimeout(prevConfirmationTimerIdRef.current);
+        };
+    }, [
+        confirmingPhotoDeletes,
+        prevConfirmationTimerIdRef,
+        setConfirmingPhotoDeletes
+    ]);
 
     if (isLoading) return null;
     if (redirectUrl) {
@@ -298,9 +330,16 @@ const Gallery = () => {
                             {isAuthenticated &&
                                 user.username === gallery.user.username && (
                                 <VerySimpleButton
+                                    confirming={confirmingPhotoDeletes.includes(
+                                        photo.id
+                                    )}
                                     onClick={() => onPhotoDelete(photo.id)}
                                 >
-                                        Delete
+                                    {confirmingPhotoDeletes.includes(
+                                        photo.id
+                                    )
+                                        ? "Confirm delete?"
+                                        : "Delete"}
                                 </VerySimpleButton>
                             )}
                         </Grid>

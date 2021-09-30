@@ -1,6 +1,8 @@
 import { styled } from "@mui/material";
 
-const VerySimpleButton = styled("button")({
+const VerySimpleButton = styled("button", {
+    shouldForwardProp: prop => prop !== "confirming"
+})(({ confirming }) => ({
     background: "none",
     outline: "none",
     padding: 0,
@@ -16,7 +18,14 @@ const VerySimpleButton = styled("button")({
 
     "&:disabled": {
         color: "#949494"
-    }
-});
+    },
+
+    ...(confirming && {
+        color: "#DD1C1A",
+        "&:hover": {
+            color: "#e74340"
+        }
+    })
+}));
 
 export default VerySimpleButton;
