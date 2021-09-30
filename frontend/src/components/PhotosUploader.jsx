@@ -129,7 +129,7 @@ const PhotosUploader = ({
         }
     };
 
-    const createSelectedPhotosPreviewItems = useCallback(
+    const renderSelectedPhotosPreviewItems = useCallback(
         /**
          * Loop through the {@link selectedPhotosFiles} and return MuiGrid items for Previewing selected photos.
          * @returns {JSX.Element} List of (MuiGrid items) to be used in (MuiGrid container)
@@ -323,7 +323,7 @@ const PhotosUploader = ({
                     xs={12}
                     spacing={2}
                 >
-                    {createSelectedPhotosPreviewItems()}
+                    {renderSelectedPhotosPreviewItems()}
                 </Grid>
             </Grid>
 
