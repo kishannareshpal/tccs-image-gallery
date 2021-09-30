@@ -155,6 +155,15 @@ const Gallery = () => {
             setConfirmingPhotoDeletes(draft => {
                 draft.push(photoId);
             });
+
+            // Reset the confirmation notice of photo deletion back to normal after some time.
+            // Clear any previous timer
+            clearTimeout(prevConfirmationTimerIdRef.current);
+            // Restart a new timer for 3s until the notice gets cleared
+            const confirmationTimerId = setTimeout(() => {
+                setConfirmingPhotoDeletes([]);
+            }, 3000);
+            prevConfirmationTimerIdRef.current = confirmationTimerId;
             return;
         }
 
@@ -206,25 +215,6 @@ const Gallery = () => {
         };
         fetchGallery();
     }, [id, setGallery, reset]);
-
-    useEffect(() => {
-        // Reset the confirmation notice of photo deletion back to normal after some time.
-
-        // Clear any previous timer
-        clearTimeout(prevConfirmationTimerIdRef.current);
-        // Restart a new timer for 3s
-        const confirmationTimerId = setTimeout(() => {
-            setConfirmingPhotoDeletes([]);
-        }, 3000);
-        prevConfirmationTimerIdRef.current = confirmationTimerId;
-        return () => {
-            clearTimeout(prevConfirmationTimerIdRef.current);
-        };
-    }, [
-        confirmingPhotoDeletes,
-        prevConfirmationTimerIdRef,
-        setConfirmingPhotoDeletes
-    ]);
 
     if (isLoading) return null;
     if (redirectUrl) {
