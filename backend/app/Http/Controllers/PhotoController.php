@@ -7,16 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 use Aws\S3\S3Client;
-use Aws\CommandInterface;
 use Aws\CommandPool;
-use Aws\Exception\AwsException;
-use Aws\ResultInterface;
-use Aws\S3\Exception\S3Exception;
 use Carbon\Carbon;
-use GuzzleHttp\Promise\PromiseInterface;
-use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Intervention\Image\Facades\Image as FacadesImage;
 
 
