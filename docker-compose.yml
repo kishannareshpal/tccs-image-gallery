@@ -1,0 +1,41 @@
+version: "3.1"
+services:
+    db:
+        image: mysql:5.7.35
+        platform: linux/amd64
+        container_name: ig-db
+        command: --default-authentication-plugin=mysql_native_password
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - 3306:3306
+        networks:
+            - my-network
+
+    backend:
+        build: ./backend
+        container_name: ig-backend
+        restart: unless-stopped
+        volumes:
+            - ./backend:/backend
+            - ./backend/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+        ports:
+            - 8000:8000
+        networks:
+            - my-network
+
+    frontend:
+        build: ./frontend
+        container_name: ig-frontend
+        ports:
+            - 3000:3000
+        networks:
+            - my-network
+
+networks:
+  my-network:
+    driver: bridge
