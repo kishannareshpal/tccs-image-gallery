@@ -42,7 +42,7 @@
     "prefer-stable": true,
     "scripts": {
         "serve": [
-            "@php -S localhost:8000 -t public"
+            "@php -S 0.0.0.0:8000 -t public"
         ],
         "post-root-package-install": [
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
