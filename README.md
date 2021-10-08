@@ -172,3 +172,45 @@ docker exec -it ig-backend bash
 
 4. Go to `https://localhost:3000/`
  </details>
+
+##### Application screenshots
+
+|                       Login                        |                        Register                        |
+| :------------------------------------------------: | :----------------------------------------------------: |
+| ![Login as existing user](./docs/images/login.png) | ![Registering as new user](./docs/images/register.png) |
+
+|              Home page               |
+| :----------------------------------: |
+| ![Home page](./docs/images/home.png) |
+
+|                    Own Profile page                     |                        Other user profile page                        |
+| :-----------------------------------------------------: | :-------------------------------------------------------------------: |
+| ![Own profile page](./docs/images/view_own_profile.png) | ![Other user profile page](./docs/images/view_other_user_profile.png) |
+
+|                     Create new gallery                      |
+| :---------------------------------------------------------: |
+| ![Create new gallery](./docs/images/create_new_gallery.png) |
+
+|                    View own gallery                     |                        View other user gallery                        |
+| :-----------------------------------------------------: | :-------------------------------------------------------------------: |
+| ![Own profile page](./docs/images/view_own_gallery.png) | ![Other user gallery page](./docs/images/view_other_user_gallery.png) |
+
+|                    Upload photos to gallery                     |                        View own gallery with photos                         |
+| :-------------------------------------------------------------: | :-------------------------------------------------------------------------: |
+| ![Upload photos on gallery](./docs/images/uploading_photos.png) | ![View gallery with photos](./docs/images/view_own_gallery_with_photos.png) |
+
+|                   Preview photo                   |
+| :-----------------------------------------------: |
+| ![Preview photo](./docs/images/preview_photo.png) |
+
+|                    Edit own gallery details                     |
+| :-------------------------------------------------------------: |
+| ![Edit own gallery details](./docs/images/edit_own_gallery.png) |
+
+|                   Delete own gallery                    |              Deleting photo in gallery (with confirmation)              |
+| :-----------------------------------------------------: | :---------------------------------------------------------------------: |
+| ![Delete gallery](./docs/images/delete_own_gallery.png) | ![Delete photo in gallery](./docs/images/deleting_photo_in_gallery.png) |
+
+|                   Browse to a non existing profile                   |
+| :------------------------------------------------------------------: |
+| ![Non-existing profile](./docs/images/view_non-existing_profile.png) |
