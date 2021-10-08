@@ -12,7 +12,7 @@ It also uses [Amazon Simple Storage Service (Amazon S3)](https://aws.amazon.com/
 
 > Before any photo is stored, it is resized to form a thumbnail which is stored alongside the original version of the photo. This thumbnail is shown when listing the gallery photos, and the original photo is shown when the user opens to preview the photo.
 
-For authentication, the application uses the Password and Token-based Authentication. _See [JSON Web Tokens (JWT)](https://jwt.io/)_
+The application uses Password and Token-based authentication. _See [JSON Web Tokens (JWT)](https://jwt.io/)_
 
 Lastly it provides docker/docker-compose files to ease running the application.
 
