@@ -81,7 +81,7 @@ AWS_SECRET_ACCESS_KEY= # insert
 
 ```bash
 # Build the docker images (ig-db, ig-backend, ig-frontend)
-docker-compose build
+docker-compose --env-file backend/.env build
 
 # Start up the containers in dettached mode, passing in the .env file
 docker-compose --env-file backend/.env up
