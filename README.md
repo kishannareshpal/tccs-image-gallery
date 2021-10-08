@@ -12,7 +12,7 @@ It also uses [Amazon Simple Storage Service (Amazon S3)](https://aws.amazon.com/
 
 For authentication, the application uses the Password and Token-based Authentication. _See [JSON Web Tokens (JWT)](https://jwt.io/)_
 
-Lastly it uses docker/docker-compose to ease running the application.
+Lastly it provides docker/docker-compose files to ease running the application.
 
 ##### Project requirements
 
