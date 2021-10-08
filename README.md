@@ -84,7 +84,7 @@ AWS_SECRET_ACCESS_KEY= # insert
 docker-compose build
 
 # Start up the containers in dettached mode, passing in the .env file
-docker-compose -d --env-file backend/.env up
+docker-compose --env-file backend/.env up
 
 # Enter backend php server bash
 docker exec -it ig-backend bash
